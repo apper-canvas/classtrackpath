@@ -1,0 +1,122 @@
+[
+  {
+    "Id": 1,
+    "studentId": "1",
+    "date": "2024-11-01",
+    "status": "Present",
+    "notes": "",
+    "recordedAt": "2024-11-01T08:00:00Z"
+  },
+  {
+    "Id": 2,
+    "studentId": "1",
+    "date": "2024-11-02",
+    "status": "Present",
+    "notes": "",
+    "recordedAt": "2024-11-02T08:00:00Z"
+  },
+  {
+    "Id": 3,
+    "studentId": "1",
+    "date": "2024-11-03",
+    "status": "Absent",
+    "notes": "Sick - parent called",
+    "recordedAt": "2024-11-03T08:30:00Z"
+  },
+  {
+    "Id": 4,
+    "studentId": "1",
+    "date": "2024-11-04",
+    "status": "Present",
+    "notes": "",
+    "recordedAt": "2024-11-04T08:00:00Z"
+  },
+  {
+    "Id": 5,
+    "studentId": "2",
+    "date": "2024-11-01",
+    "status": "Present",
+    "notes": "",
+    "recordedAt": "2024-11-01T08:00:00Z"
+  },
+  {
+    "Id": 6,
+    "studentId": "2",
+    "date": "2024-11-02",
+    "status": "Tardy",
+    "notes": "Bus was late",
+    "recordedAt": "2024-11-02T08:15:00Z"
+  },
+  {
+    "Id": 7,
+    "studentId": "2",
+    "date": "2024-11-03",
+    "status": "Present",
+    "notes": "",
+    "recordedAt": "2024-11-03T08:00:00Z"
+  },
+  {
+    "Id": 8,
+    "studentId": "3",
+    "date": "2024-11-01",
+    "status": "Present",
+    "notes": "",
+    "recordedAt": "2024-11-01T08:00:00Z"
+  },
+  {
+    "Id": 9,
+    "studentId": "3",
+    "date": "2024-11-02",
+    "status": "Present",
+    "notes": "",
+    "recordedAt": "2024-11-02T08:00:00Z"
+  },
+  {
+    "Id": 10,
+    "studentId": "3",
+    "date": "2024-11-03",
+    "status": "Present",
+    "notes": "",
+    "recordedAt": "2024-11-03T08:00:00Z"
+  },
+  {
+    "Id": 11,
+    "studentId": "4",
+    "date": "2024-11-01",
+    "status": "Absent",
+    "notes": "Doctor appointment",
+    "recordedAt": "2024-11-01T09:00:00Z"
+  },
+  {
+    "Id": 12,
+    "studentId": "4",
+    "date": "2024-11-02",
+    "status": "Present",
+    "notes": "",
+    "recordedAt": "2024-11-02T08:00:00Z"
+  },
+  {
+    "Id": 13,
+    "studentId": "5",
+    "date": "2024-11-01",
+    "status": "Present",
+    "notes": "",
+    "recordedAt": "2024-11-01T08:00:00Z"
+  },
+  {
+    "Id": 14,
+    "studentId": "5",
+    "date": "2024-11-02",
+    "status": "Present",
+    "notes": "",
+    "recordedAt": "2024-11-02T08:00:00Z"
+  },
+  {
+    "Id": 15,
+    "studentId": "5",
+    "date": "2024-11-03",
+    "status": "Tardy",
+    "notes": "Traffic delay",
+    "recordedAt": "2024-11-03T08:20:00Z"
+  }
+]

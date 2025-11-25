@@ -1,0 +1,434 @@
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useOutletContext } from "react-router-dom";
+import { toast } from "react-toastify";
+import ApperIcon from "@/components/ApperIcon";
+import Button from "@/components/atoms/Button";
+import Card from "@/components/atoms/Card";
+import FormField from "@/components/molecules/FormField";
+import StudentTable from "@/components/organisms/StudentTable";
+import Loading from "@/components/ui/Loading";
+import ErrorView from "@/components/ui/ErrorView";
+import Empty from "@/components/ui/Empty";
+import studentService from "@/services/api/studentService";
+
+const Students = () => {
+  const { globalSearch } = useOutletContext() || {};
+  const [students, setStudents] = useState([]);
+  const [filteredStudents, setFilteredStudents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [showForm, setShowForm] = useState(false);
+  const [editStudent, setEditStudent] = useState(null);
+  const [selectedStudent, setSelectedStudent] = useState(null);
+  const [filterStatus, setFilterStatus] = useState("all");
+  
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    studentId: "",
+    email: "",
+    phone: "",
+    gradeLevel: "",
+    photoUrl: ""
+  });
+
+  useEffect(() => {
+    loadStudents();
+  }, []);
+
+  useEffect(() => {
+    applyFilters();
+  }, [globalSearch, students, filterStatus]);
+
+  const loadStudents = async () => {
+    setLoading(true);
+    setError("");
+    
+    try {
+      const data = await studentService.getAll();
+      setStudents(data);
+    } catch (error) {
+      setError(error.message || "Failed to load students");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const applyFilters = () => {
+    let filtered = [...students];
+
+    // Apply status filter
+    if (filterStatus !== "all") {
+      filtered = filtered.filter(student => 
+        student.status.toLowerCase() === filterStatus.toLowerCase()
+      );
+    }
+
+    // Apply search filter
+    if (globalSearch) {
+      filtered = filtered.filter(student =>
+        student.firstName.toLowerCase().includes(globalSearch.toLowerCase()) ||
+        student.lastName.toLowerCase().includes(globalSearch.toLowerCase()) ||
+        student.studentId.toLowerCase().includes(globalSearch.toLowerCase()) ||
+        student.email.toLowerCase().includes(globalSearch.toLowerCase())
+      );
+    }
+
+    setFilteredStudents(filtered);
+  };
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!formData.firstName.trim() || !formData.lastName.trim()) {
+      toast.error("First name and last name are required");
+      return;
+    }
+
+    try {
+      const studentData = {
+        ...formData,
+        photoUrl: formData.photoUrl || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
+      };
+
+      let result;
+      if (editStudent) {
+        result = await studentService.update(editStudent.Id, studentData);
+        setStudents(prev => prev.map(s => s.Id === editStudent.Id ? result : s));
+        toast.success("Student updated successfully");
+      } else {
+        result = await studentService.create(studentData);
+        setStudents(prev => [...prev, result]);
+        toast.success("Student added successfully");
+      }
+
+      resetForm();
+    } catch (error) {
+      toast.error(error.message || "Failed to save student");
+    }
+  };
+
+  const handleEdit = (student) => {
+    setEditStudent(student);
+    setFormData({
+      firstName: student.firstName,
+      lastName: student.lastName,
+      studentId: student.studentId,
+      email: student.email,
+      phone: student.phone,
+      gradeLevel: student.gradeLevel,
+      photoUrl: student.photoUrl
+    });
+    setShowForm(true);
+  };
+
+  const handleDelete = async (studentId) => {
+    if (window.confirm("Are you sure you want to delete this student?")) {
+      try {
+        await studentService.delete(studentId);
+        setStudents(prev => prev.filter(s => s.Id !== studentId));
+        toast.success("Student deleted successfully");
+      } catch (error) {
+        toast.error(error.message || "Failed to delete student");
+      }
+    }
+  };
+
+  const handleViewDetails = (student) => {
+    setSelectedStudent(student);
+  };
+
+  const resetForm = () => {
+    setFormData({
+      firstName: "",
+      lastName: "",
+      studentId: "",
+      email: "",
+      phone: "",
+      gradeLevel: "",
+      photoUrl: ""
+    });
+    setEditStudent(null);
+    setShowForm(false);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  if (loading) return <Loading />;
+  if (error) return <ErrorView message={error} onRetry={loadStudents} />;
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold gradient-text">Students</h1>
+          <p className="text-gray-600">Manage your class roster</p>
+        </div>
+        <Button
+          onClick={() => setShowForm(true)}
+          className="flex items-center gap-2"
+        >
+          <ApperIcon name="UserPlus" className="w-4 h-4" />
+          Add Student
+        </Button>
+      </div>
+
+      {/* Filters */}
+      <Card className="p-4">
+        <div className="flex items-center gap-4">
+          <label className="text-sm font-medium text-gray-700">Filter by status:</label>
+          <select
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+            className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+          >
+            <option value="all">All Students</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+          
+          <div className="text-sm text-gray-600 ml-auto">
+            Showing {filteredStudents.length} of {students.length} students
+          </div>
+        </div>
+      </Card>
+
+      {/* Students List */}
+      {filteredStudents.length === 0 ? (
+        <Empty 
+          title="No students found"
+          description={globalSearch || filterStatus !== "all" 
+            ? "No students match your search criteria" 
+            : "Get started by adding your first student to the class roster"
+          }
+          actionText="Add Student"
+          onAction={() => setShowForm(true)}
+          icon="Users"
+        />
+      ) : (
+        <StudentTable
+          students={filteredStudents}
+          onViewDetails={handleViewDetails}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+        />
+      )}
+
+      {/* Add/Edit Student Modal */}
+      <AnimatePresence>
+        {showForm && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            onClick={(e) => e.target === e.currentTarget && resetForm()}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+            >
+              <form onSubmit={handleFormSubmit} className="p-6 space-y-6">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-xl font-semibold text-gray-900">
+                    {editStudent ? "Edit Student" : "Add New Student"}
+                  </h2>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    onClick={resetForm}
+                    className="p-2"
+                  >
+                    <ApperIcon name="X" className="w-5 h-5" />
+                  </Button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <FormField
+                    label="First Name"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleInputChange}
+                    required
+                  />
+
+                  <FormField
+                    label="Last Name"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleInputChange}
+                    required
+                  />
+
+                  <FormField
+                    label="Student ID"
+                    name="studentId"
+                    value={formData.studentId}
+                    onChange={handleInputChange}
+                    required
+                  />
+
+                  <FormField
+                    label="Grade Level"
+                    type="select"
+                    name="gradeLevel"
+                    value={formData.gradeLevel}
+                    onChange={handleInputChange}
+                    options={[
+                      { value: "9th Grade", label: "9th Grade" },
+                      { value: "10th Grade", label: "10th Grade" },
+                      { value: "11th Grade", label: "11th Grade" },
+                      { value: "12th Grade", label: "12th Grade" }
+                    ]}
+                    required
+                  />
+
+                  <FormField
+                    label="Email"
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    required
+                  />
+
+                  <FormField
+                    label="Phone"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                  />
+
+                  <FormField
+                    label="Photo URL"
+                    name="photoUrl"
+                    value={formData.photoUrl}
+                    onChange={handleInputChange}
+                    className="md:col-span-2"
+                  />
+                </div>
+
+                <div className="flex justify-end gap-3">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={resetForm}
+                  >
+                    Cancel
+                  </Button>
+                  <Button type="submit">
+                    {editStudent ? "Update Student" : "Add Student"}
+                  </Button>
+                </div>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Student Details Modal */}
+      <AnimatePresence>
+        {selectedStudent && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            onClick={(e) => e.target === e.currentTarget && setSelectedStudent(null)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="bg-white rounded-xl shadow-2xl max-w-2xl w-full"
+            >
+              <div className="p-6 space-y-6">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-xl font-semibold text-gray-900">Student Details</h2>
+                  <Button
+                    variant="ghost"
+                    onClick={() => setSelectedStudent(null)}
+                    className="p-2"
+                  >
+                    <ApperIcon name="X" className="w-5 h-5" />
+                  </Button>
+                </div>
+
+                <div className="flex items-center gap-6">
+                  <img
+                    src={selectedStudent.photoUrl}
+                    alt={`${selectedStudent.firstName} ${selectedStudent.lastName}`}
+                    className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg"
+                  />
+                  <div>
+                    <h3 className="text-2xl font-bold text-gray-900">
+                      {selectedStudent.firstName} {selectedStudent.lastName}
+                    </h3>
+                    <p className="text-gray-600">{selectedStudent.studentId}</p>
+                    <p className="text-gray-600">{selectedStudent.gradeLevel}</p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Email
+                    </label>
+                    <p className="text-gray-900">{selectedStudent.email}</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Phone
+                    </label>
+                    <p className="text-gray-900">{selectedStudent.phone || "Not provided"}</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Enrollment Date
+                    </label>
+                    <p className="text-gray-900">{selectedStudent.enrollmentDate}</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Status
+                    </label>
+                    <p className="text-gray-900">{selectedStudent.status}</p>
+                  </div>
+                </div>
+
+                <div className="flex justify-end gap-3">
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      setSelectedStudent(null);
+                      handleEdit(selectedStudent);
+                    }}
+                  >
+                    Edit Student
+                  </Button>
+                  <Button
+                    onClick={() => setSelectedStudent(null)}
+                  >
+                    Close
+                  </Button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+export default Students;

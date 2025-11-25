@@ -1,0 +1,122 @@
+[
+  {
+    "Id": 1,
+    "studentId": "1",
+    "assignmentName": "Math Quiz 1",
+    "category": "Quiz",
+    "score": 85,
+    "maxScore": 100,
+    "percentage": 85,
+    "letterGrade": "B",
+    "date": "2024-09-15",
+    "notes": "Good work on algebra problems"
+  },
+  {
+    "Id": 2,
+    "studentId": "1",
+    "assignmentName": "Science Lab Report",
+    "category": "Lab",
+    "score": 92,
+    "maxScore": 100,
+    "percentage": 92,
+    "letterGrade": "A-",
+    "date": "2024-09-20",
+    "notes": "Excellent analysis and conclusions"
+  },
+  {
+    "Id": 3,
+    "studentId": "1",
+    "assignmentName": "History Essay",
+    "category": "Essay",
+    "score": 88,
+    "maxScore": 100,
+    "percentage": 88,
+    "letterGrade": "B+",
+    "date": "2024-09-25",
+    "notes": "Strong thesis and supporting evidence"
+  },
+  {
+    "Id": 4,
+    "studentId": "2",
+    "assignmentName": "Math Quiz 1",
+    "category": "Quiz",
+    "score": 78,
+    "maxScore": 100,
+    "percentage": 78,
+    "letterGrade": "C+",
+    "date": "2024-09-15",
+    "notes": "Need to review geometric formulas"
+  },
+  {
+    "Id": 5,
+    "studentId": "2",
+    "assignmentName": "Science Lab Report",
+    "category": "Lab",
+    "score": 95,
+    "maxScore": 100,
+    "percentage": 95,
+    "letterGrade": "A",
+    "date": "2024-09-20",
+    "notes": "Outstanding experimental design"
+  },
+  {
+    "Id": 6,
+    "studentId": "3",
+    "assignmentName": "Math Quiz 1",
+    "category": "Quiz",
+    "score": 94,
+    "maxScore": 100,
+    "percentage": 94,
+    "letterGrade": "A",
+    "date": "2024-09-15",
+    "notes": "Perfect execution on all problems"
+  },
+  {
+    "Id": 7,
+    "studentId": "3",
+    "assignmentName": "Science Lab Report",
+    "category": "Lab",
+    "score": 89,
+    "maxScore": 100,
+    "percentage": 89,
+    "letterGrade": "B+",
+    "date": "2024-09-20",
+    "notes": "Good methodology, minor calculation errors"
+  },
+  {
+    "Id": 8,
+    "studentId": "4",
+    "assignmentName": "Math Quiz 1",
+    "category": "Quiz",
+    "score": 72,
+    "maxScore": 100,
+    "percentage": 72,
+    "letterGrade": "C",
+    "date": "2024-09-15",
+    "notes": "Consider attending tutoring sessions"
+  },
+  {
+    "Id": 9,
+    "studentId": "5",
+    "assignmentName": "Math Quiz 1",
+    "category": "Quiz",
+    "score": 91,
+    "maxScore": 100,
+    "percentage": 91,
+    "letterGrade": "A-",
+    "date": "2024-09-15",
+    "notes": "Excellent problem-solving approach"
+  },
+  {
+    "Id": 10,
+    "studentId": "5",
+    "assignmentName": "History Essay",
+    "category": "Essay",
+    "score": 96,
+    "maxScore": 100,
+    "percentage": 96,
+    "letterGrade": "A",
+    "date": "2024-09-25",
+    "notes": "Exceptional research and writing"
+  }
+]
