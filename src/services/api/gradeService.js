@@ -18,12 +18,13 @@ class GradeService {
     return prepared;
   }
 
-  async getAll() {
+async getAll() {
     try {
-      const apperClient = getApperClient();
-      if (!apperClient) {
-        throw new Error('ApperClient not initialized');
-      }
+      const { ApperClient } = window.ApperSDK;
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      });
 
       const params = {
         fields: [
@@ -56,12 +57,13 @@ class GradeService {
     }
   }
 
-  async getById(id) {
+async getById(id) {
     try {
-      const apperClient = getApperClient();
-      if (!apperClient) {
-        throw new Error('ApperClient not initialized');
-      }
+      const { ApperClient } = window.ApperSDK;
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      });
 
       const params = {
         fields: [
@@ -92,12 +94,13 @@ class GradeService {
     }
   }
 
-  async getByStudentId(studentId) {
+async getByStudentId(studentId) {
     try {
-      const apperClient = getApperClient();
-      if (!apperClient) {
-        throw new Error('ApperClient not initialized');
-      }
+      const { ApperClient } = window.ApperSDK;
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      });
 
       const params = {
         fields: [
@@ -135,12 +138,13 @@ class GradeService {
     }
   }
 
-  async create(gradeData) {
+async create(gradeData) {
     try {
-      const apperClient = getApperClient();
-      if (!apperClient) {
-        throw new Error('ApperClient not initialized');
-      }
+      const { ApperClient } = window.ApperSDK;
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      });
 
       const percentage = Math.round((gradeData.score_c / gradeData.max_score_c) * 100);
       const letterGrade = this.calculateLetterGrade(percentage);
@@ -194,12 +198,13 @@ class GradeService {
     }
   }
 
-  async update(id, updateData) {
+async update(id, updateData) {
     try {
-      const apperClient = getApperClient();
-      if (!apperClient) {
-        throw new Error('ApperClient not initialized');
-      }
+      const { ApperClient } = window.ApperSDK;
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      });
 
       const preparedData = this.prepareLookupFields({
         Id: parseInt(id),
@@ -249,12 +254,13 @@ class GradeService {
     }
   }
 
-  async delete(id) {
+async delete(id) {
     try {
-      const apperClient = getApperClient();
-      if (!apperClient) {
-        throw new Error('ApperClient not initialized');
-      }
+      const { ApperClient } = window.ApperSDK;
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      });
 
       const params = { 
         RecordIds: [parseInt(id)]
@@ -309,7 +315,7 @@ class GradeService {
     return "F";
   }
 
-  async calculateGPA(studentId) {
+async calculateGPA(studentId) {
     try {
       const studentGrades = await this.getByStudentId(studentId);
       
