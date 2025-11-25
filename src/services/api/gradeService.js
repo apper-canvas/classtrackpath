@@ -20,11 +20,10 @@ class GradeService {
 
 async getAll() {
     try {
-      const { ApperClient } = window.ApperSDK;
-      const apperClient = new ApperClient({
-        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
-        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
-      });
+      const apperClient = await getApperClient();
+      if (!apperClient) {
+        throw new Error("ApperClient not initialized");
+      }
 
       const params = {
         fields: [
@@ -60,11 +59,10 @@ async getAll() {
 
 async getById(id) {
     try {
-      const { ApperClient } = window.ApperSDK;
-      const apperClient = new ApperClient({
-        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
-        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
-      });
+      const apperClient = await getApperClient();
+      if (!apperClient) {
+        throw new Error("ApperClient not initialized");
+      }
 
       const params = {
         fields: [
@@ -98,11 +96,10 @@ async getById(id) {
 
 async getByStudentId(studentId) {
     try {
-      const { ApperClient } = window.ApperSDK;
-      const apperClient = new ApperClient({
-        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
-        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
-      });
+      const apperClient = await getApperClient();
+      if (!apperClient) {
+        throw new Error("ApperClient not initialized");
+      }
 
       const params = {
         fields: [
@@ -143,11 +140,10 @@ async getByStudentId(studentId) {
 
 async create(gradeData) {
     try {
-      const { ApperClient } = window.ApperSDK;
-      const apperClient = new ApperClient({
-        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
-        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
-      });
+      const apperClient = await getApperClient();
+      if (!apperClient) {
+        throw new Error("ApperClient not initialized");
+      }
 
       const percentage = Math.round((gradeData.score_c / gradeData.max_score_c) * 100);
       const letterGrade = this.calculateLetterGrade(percentage);
@@ -203,11 +199,10 @@ async create(gradeData) {
 
 async update(id, updateData) {
     try {
-      const { ApperClient } = window.ApperSDK;
-      const apperClient = new ApperClient({
-        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
-        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
-      });
+      const apperClient = await getApperClient();
+      if (!apperClient) {
+        throw new Error("ApperClient not initialized");
+      }
 
       const preparedData = this.prepareLookupFields({
         Id: parseInt(id),
@@ -259,11 +254,10 @@ async update(id, updateData) {
 
 async delete(id) {
     try {
-      const { ApperClient } = window.ApperSDK;
-      const apperClient = new ApperClient({
-        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
-        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
-      });
+      const apperClient = await getApperClient();
+      if (!apperClient) {
+        throw new Error("ApperClient not initialized");
+      }
 
       const params = { 
         RecordIds: [parseInt(id)]
