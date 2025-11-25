@@ -34,6 +34,13 @@ class StudentService {
         ]
       };
       
+// Initialize ApperClient with Project ID and Public Key
+      const { ApperClient } = window.ApperSDK;
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      });
+      
       const response = await apperClient.fetchRecords(this.tableName, params);
       
       if (!response.success) {
@@ -317,6 +324,13 @@ Name: studentData.Name || `${studentData.first_name_c} ${studentData.last_name_c
         }]
       };
 
+// Initialize ApperClient with Project ID and Public Key
+      const { ApperClient } = window.ApperSDK;
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      });
+      
       const response = await apperClient.fetchRecords(this.tableName, params);
       
       if (!response.success) {
@@ -366,6 +380,13 @@ Name: studentData.Name || `${studentData.first_name_c} ${studentData.last_name_c
         ]
       };
 
+// Initialize ApperClient with Project ID and Public Key
+      const { ApperClient } = window.ApperSDK;
+      const apperClient = new ApperClient({
+        apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+        apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+      });
+      
       const response = await apperClient.fetchRecords(this.tableName, params);
       
       if (!response.success) {
