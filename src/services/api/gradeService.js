@@ -35,8 +35,10 @@ async getAll() {
           {"field": {"Name": "max_score_c"}},
           {"field": {"Name": "percentage_c"}},
 {"field": {"Name": "letter_grade_c"}},
-          {"field": {"Name": "notes_c"}},
+{"field": {"Name": "notes_c"}},
           {"field": {"Name": "description_c"}},
+          {"field": {"Name": "status_c"}},
+          {"field": {"Name": "grade_code_c"}},
           {"field": {"Name": "student_id_c"}}
         ]
       };
@@ -74,8 +76,10 @@ async getById(id) {
           {"field": {"Name": "max_score_c"}},
 {"field": {"Name": "percentage_c"}},
           {"field": {"Name": "letter_grade_c"}},
-          {"field": {"Name": "notes_c"}},
+{"field": {"Name": "notes_c"}},
           {"field": {"Name": "description_c"}},
+          {"field": {"Name": "status_c"}},
+          {"field": {"Name": "grade_code_c"}},
           {"field": {"Name": "student_id_c"}}
         ]
       };
@@ -111,8 +115,10 @@ async getByStudentId(studentId) {
           {"field": {"Name": "max_score_c"}},
           {"field": {"Name": "percentage_c"}},
 {"field": {"Name": "letter_grade_c"}},
-          {"field": {"Name": "notes_c"}},
+{"field": {"Name": "notes_c"}},
           {"field": {"Name": "description_c"}},
+          {"field": {"Name": "status_c"}},
+          {"field": {"Name": "grade_code_c"}},
           {"field": {"Name": "student_id_c"}}
         ],
         where: [
@@ -154,8 +160,11 @@ async create(gradeData) {
         score_c: gradeData.score_c,
         max_score_c: gradeData.max_score_c,
         percentage_c: percentage,
-        letter_grade_c: letterGrade,
+letter_grade_c: letterGrade,
         notes_c: gradeData.notes_c || "",
+        description_c: gradeData.description_c || "",
+        status_c: gradeData.status_c || "",
+        grade_code_c: gradeData.grade_code_c || "",
         date_c: gradeData.date_c || new Date().toISOString().split('T')[0],
         student_id_c: gradeData.student_id_c
       });

@@ -15,6 +15,9 @@ const [formData, setFormData] = useState({
     score: "",
     maxScore: "100",
     notes: "",
+    description: "",
+    status: "",
+    gradeCode: "",
   });
   const [loading, setLoading] = useState(false);
 
@@ -30,7 +33,7 @@ const [formData, setFormData] = useState({
 
   useEffect(() => {
 if (editGrade) {
-      setFormData({
+setFormData({
         name: editGrade.Name || "",
         tags: editGrade.Tags || "",
         assignmentName: editGrade.assignment_name_c || "",
@@ -38,6 +41,9 @@ if (editGrade) {
         score: editGrade.score_c?.toString() || "",
         maxScore: editGrade.max_score_c?.toString() || "100",
         notes: editGrade.notes_c || "",
+        description: editGrade.description_c || "",
+        status: editGrade.status_c || "",
+        gradeCode: editGrade.grade_code_c || "",
       });
     }
   }, [editGrade]);
@@ -85,6 +91,9 @@ const gradeData = {
         score_c: parseFloat(formData.score),
         max_score_c: parseFloat(formData.maxScore),
         notes_c: formData.notes.trim(),
+        description_c: formData.description.trim(),
+        status_c: formData.status,
+        grade_code_c: formData.gradeCode.trim(),
         date_c: new Date().toISOString().split('T')[0]
       };
 
@@ -181,7 +190,45 @@ const gradeData = {
             placeholder="Enter max score"
             min="1"
             step="0.1"
-            required
+required
+          />
+        </div>
+
+        <div>
+          <FormField
+            label="Description"
+            name="description"
+            type="textarea"
+            value={formData.description}
+            onChange={(e) => setFormData({...formData, description: e.target.value})}
+            placeholder="Enter grade description"
+            rows={3}
+          />
+        </div>
+
+        <div>
+          <FormField
+            label="Status"
+            name="status"
+            type="select"
+            value={formData.status}
+            onChange={(e) => setFormData({...formData, status: e.target.value})}
+            options={[
+              { value: "", label: "Select Status" },
+              { value: "Draft", label: "Draft" },
+              { value: "Published", label: "Published" },
+              { value: "Final", label: "Final" }
+            ]}
+          />
+        </div>
+
+        <div>
+          <FormField
+            label="Grade Code"
+            name="gradeCode"
+            value={formData.gradeCode}
+            onChange={(e) => setFormData({...formData, gradeCode: e.target.value})}
+            placeholder="Enter grade code (e.g., MATH101)"
           />
         </div>
 
