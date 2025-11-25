@@ -26,10 +26,12 @@ const StudentTable = ({
 
 const sortedStudents = [...students].sort((a, b) => {
 let aValue = a[sortField] || a.Name || `${a.first_name_c} ${a.last_name_c}`;
-    let bValue = b[sortField];
+    let bValue = b[sortField] || b.Name || `${b.first_name_c} ${b.last_name_c}`;
     
     if (typeof aValue === "string") {
       aValue = aValue.toLowerCase();
+    }
+    if (typeof bValue === "string") {
       bValue = bValue.toLowerCase();
     }
     
