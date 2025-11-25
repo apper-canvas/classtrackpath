@@ -483,25 +483,24 @@ Name: "",
 <p className="text-gray-900">{selectedStudent.ModifiedBy?.Name || "System"}</p>
                   </div>
                 </div>
-              </div>
+</div>
 
-                <div className="flex justify-end gap-3">
-                  <Button
-                    variant="outline"
-                    onClick={() => {
-                      setSelectedStudent(null);
-                      handleEdit(selectedStudent);
-                    }}
-                  >
-                    Edit Student
-                  </Button>
-<Button
-                    variant="outline"
-                    onClick={() => setSelectedStudent(null)}
-                  >
-                    Close
-                  </Button>
-                </div>
+              <div className="flex justify-end gap-3 p-6 pt-0">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setSelectedStudent(null);
+                    handleEdit(selectedStudent);
+                  }}
+                >
+                  Edit Student
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => setSelectedStudent(null)}
+                >
+                  Close
+                </Button>
               </div>
             </motion.div>
           </motion.div>
