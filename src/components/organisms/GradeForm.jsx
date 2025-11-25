@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import gradeService from "@/services/api/gradeService";
 import ApperIcon from "@/components/ApperIcon";
 import Button from "@/components/atoms/Button";
 import Card from "@/components/atoms/Card";
 import FormField from "@/components/molecules/FormField";
-import gradeService from "@/services/api/gradeService";
 
 const GradeForm = ({ studentId, onSubmit, onCancel, editGrade = null }) => {
 const [formData, setFormData] = useState({
+    name: "",
+    tags: "",
     assignmentName: "",
     category: "",
     score: "",
@@ -30,8 +32,10 @@ const [formData, setFormData] = useState({
   useEffect(() => {
 if (editGrade) {
       setFormData({
+        name: editGrade.Name || "",
+        tags: editGrade.Tags || "",
         assignmentName: editGrade.assignment_name_c || "",
-category: editGrade.category_c || "",
+        category: editGrade.category_c || "",
         score: editGrade.score_c?.toString() || "",
         maxScore: editGrade.max_score_c?.toString() || "100",
         notes: editGrade.notes_c || "",
@@ -74,14 +78,15 @@ category: editGrade.category_c || "",
     setLoading(true);
     
     try {
-      const gradeData = {
-student_id_c: studentId,
+const gradeData = {
+        Name: formData.name.trim(),
+        Tags: formData.tags.trim(),
+        student_id_c: studentId,
         assignment_name_c: formData.assignmentName.trim(),
         category_c: formData.category,
         score_c: parseFloat(formData.score),
-max_score_c: parseFloat(formData.maxScore),
+        max_score_c: parseFloat(formData.maxScore),
         notes_c: formData.notes.trim(),
-        description_c: formData.description.trim(),
         description_c: formData.description.trim(),
         date_c: new Date().toISOString().split('T')[0]
       };
@@ -120,8 +125,25 @@ max_score_c: parseFloat(formData.maxScore),
         </h3>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+<form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <FormField
+            label="Name"
+            name="name"
+            value={formData.name}
+            onChange={handleInputChange}
+            placeholder="Enter grade name"
+            required
+          />
+
+          <FormField
+            label="Tags"
+            name="tags"
+            value={formData.tags}
+            onChange={handleInputChange}
+            placeholder="Enter tags (comma-separated)"
+          />
+
           <FormField
             label="Assignment Name"
             name="assignmentName"
@@ -166,7 +188,46 @@ max_score_c: parseFloat(formData.maxScore),
           />
         </div>
 
-        {formData.score && formData.maxScore && (
+        {editGrade && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <FormField
+              label="Owner"
+              name="owner"
+              value={editGrade.Owner?.Name || "N/A"}
+              readOnly
+            />
+
+            <FormField
+              label="Created By"
+              name="createdBy"
+              value={editGrade.CreatedBy?.Name || "N/A"}
+              readOnly
+            />
+
+            <FormField
+              label="Created On"
+              name="createdOn"
+              value={editGrade.CreatedOn ? new Date(editGrade.CreatedOn).toLocaleDateString() : "N/A"}
+              readOnly
+            />
+
+            <FormField
+              label="Modified By"
+              name="modifiedBy"
+              value={editGrade.ModifiedBy?.Name || "N/A"}
+              readOnly
+            />
+
+            <FormField
+              label="Modified On"
+              name="modifiedOn"
+              value={editGrade.ModifiedOn ? new Date(editGrade.ModifiedOn).toLocaleDateString() : "N/A"}
+              readOnly
+            />
+          </div>
+        )}
+
+{formData.score && formData.maxScore && (
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4">
             <div className="text-center">
               <p className="text-sm text-gray-600 mb-1">Calculated Grade</p>
@@ -178,7 +239,7 @@ max_score_c: parseFloat(formData.maxScore),
           </div>
         )}
 
-<FormField
+        <FormField
           label="Notes"
           name="notes"
           value={formData.notes}
