@@ -22,7 +22,9 @@ async getAll() {
     try {
       const apperClient = await getApperClient();
       if (!apperClient) {
-        throw new Error("ApperClient not initialized");
+        console.error("ApperClient initialization failed");
+        toast.error("Database connection failed");
+        return [];
       }
 
       const params = {
@@ -34,11 +36,8 @@ async getAll() {
           {"field": {"Name": "score_c"}},
           {"field": {"Name": "max_score_c"}},
           {"field": {"Name": "percentage_c"}},
-{"field": {"Name": "letter_grade_c"}},
-{"field": {"Name": "notes_c"}},
-          {"field": {"Name": "description_c"}},
-          {"field": {"Name": "status_c"}},
-          {"field": {"Name": "grade_code_c"}},
+          {"field": {"Name": "letter_grade_c"}},
+          {"field": {"Name": "notes_c"}},
           {"field": {"Name": "student_id_c"}}
         ]
       };
@@ -46,7 +45,7 @@ async getAll() {
       const response = await apperClient.fetchRecords(this.tableName, params);
       
       if (!response.success) {
-        console.error(response.message);
+        console.error("API Error:", response.message);
         toast.error(response.message);
         return [];
       }
@@ -54,7 +53,7 @@ async getAll() {
       return response.data || [];
     } catch (error) {
       console.error("Error fetching grades:", error?.response?.data?.message || error);
-      toast.error("Failed to fetch grades");
+      toast.error("Network error - Failed to fetch grades");
       return [];
     }
   }
@@ -63,7 +62,9 @@ async getById(id) {
     try {
       const apperClient = await getApperClient();
       if (!apperClient) {
-        throw new Error("ApperClient not initialized");
+        console.error("ApperClient initialization failed");
+        toast.error("Database connection failed");
+        return null;
       }
 
       const params = {
@@ -74,12 +75,9 @@ async getById(id) {
           {"field": {"Name": "date_c"}},
           {"field": {"Name": "score_c"}},
           {"field": {"Name": "max_score_c"}},
-{"field": {"Name": "percentage_c"}},
+          {"field": {"Name": "percentage_c"}},
           {"field": {"Name": "letter_grade_c"}},
-{"field": {"Name": "notes_c"}},
-          {"field": {"Name": "description_c"}},
-          {"field": {"Name": "status_c"}},
-          {"field": {"Name": "grade_code_c"}},
+          {"field": {"Name": "notes_c"}},
           {"field": {"Name": "student_id_c"}}
         ]
       };
@@ -93,7 +91,7 @@ async getById(id) {
       return response.data;
     } catch (error) {
       console.error(`Error fetching grade ${id}:`, error?.response?.data?.message || error);
-      toast.error("Failed to fetch grade");
+      toast.error("Network error - Failed to fetch grade");
       return null;
     }
   }
@@ -102,7 +100,9 @@ async getByStudentId(studentId) {
     try {
       const apperClient = await getApperClient();
       if (!apperClient) {
-        throw new Error("ApperClient not initialized");
+        console.error("ApperClient initialization failed");
+        toast.error("Database connection failed");
+        return [];
       }
 
       const params = {
@@ -114,11 +114,8 @@ async getByStudentId(studentId) {
           {"field": {"Name": "score_c"}},
           {"field": {"Name": "max_score_c"}},
           {"field": {"Name": "percentage_c"}},
-{"field": {"Name": "letter_grade_c"}},
-{"field": {"Name": "notes_c"}},
-          {"field": {"Name": "description_c"}},
-          {"field": {"Name": "status_c"}},
-          {"field": {"Name": "grade_code_c"}},
+          {"field": {"Name": "letter_grade_c"}},
+          {"field": {"Name": "notes_c"}},
           {"field": {"Name": "student_id_c"}}
         ],
         where: [
@@ -133,13 +130,15 @@ async getByStudentId(studentId) {
       const response = await apperClient.fetchRecords(this.tableName, params);
       
       if (!response.success) {
-        console.error(response.message);
+        console.error("API Error:", response.message);
+        toast.error(response.message);
         return [];
       }
 
       return response.data || [];
     } catch (error) {
       console.error("Error fetching student grades:", error?.response?.data?.message || error);
+      toast.error("Network error - Failed to fetch student grades");
       return [];
     }
   }
@@ -148,7 +147,9 @@ async create(gradeData) {
     try {
       const apperClient = await getApperClient();
       if (!apperClient) {
-        throw new Error("ApperClient not initialized");
+        console.error("ApperClient initialization failed");
+        toast.error("Database connection failed");
+        return null;
       }
 
       const percentage = Math.round((gradeData.score_c / gradeData.max_score_c) * 100);
@@ -160,11 +161,8 @@ async create(gradeData) {
         score_c: gradeData.score_c,
         max_score_c: gradeData.max_score_c,
         percentage_c: percentage,
-letter_grade_c: letterGrade,
+        letter_grade_c: letterGrade,
         notes_c: gradeData.notes_c || "",
-        description_c: gradeData.description_c || "",
-        status_c: gradeData.status_c || "",
-        grade_code_c: gradeData.grade_code_c || "",
         date_c: gradeData.date_c || new Date().toISOString().split('T')[0],
         student_id_c: gradeData.student_id_c
       });
@@ -176,7 +174,7 @@ letter_grade_c: letterGrade,
       const response = await apperClient.createRecord(this.tableName, params);
       
       if (!response.success) {
-        console.error(response.message);
+        console.error("API Error:", response.message);
         toast.error(response.message);
         return null;
       }
@@ -201,7 +199,7 @@ letter_grade_c: letterGrade,
       return null;
     } catch (error) {
       console.error("Error creating grade:", error?.response?.data?.message || error);
-      toast.error("Failed to create grade");
+      toast.error("Network error - Failed to create grade");
       return null;
     }
   }
@@ -210,7 +208,9 @@ async update(id, updateData) {
     try {
       const apperClient = await getApperClient();
       if (!apperClient) {
-        throw new Error("ApperClient not initialized");
+        console.error("ApperClient initialization failed");
+        toast.error("Database connection failed");
+        return null;
       }
 
       const preparedData = this.prepareLookupFields({
@@ -231,7 +231,7 @@ async update(id, updateData) {
       const response = await apperClient.updateRecord(this.tableName, params);
       
       if (!response.success) {
-        console.error(response.message);
+        console.error("API Error:", response.message);
         toast.error(response.message);
         return null;
       }
@@ -256,7 +256,7 @@ async update(id, updateData) {
       return null;
     } catch (error) {
       console.error("Error updating grade:", error?.response?.data?.message || error);
-      toast.error("Failed to update grade");
+      toast.error("Network error - Failed to update grade");
       return null;
     }
   }
@@ -265,7 +265,9 @@ async delete(id) {
     try {
       const apperClient = await getApperClient();
       if (!apperClient) {
-        throw new Error("ApperClient not initialized");
+        console.error("ApperClient initialization failed");
+        toast.error("Database connection failed");
+        return false;
       }
 
       const params = { 
@@ -275,7 +277,7 @@ async delete(id) {
       const response = await apperClient.deleteRecord(this.tableName, params);
       
       if (!response.success) {
-        console.error(response.message);
+        console.error("API Error:", response.message);
         toast.error(response.message);
         return false;
       }
@@ -300,7 +302,7 @@ async delete(id) {
       return false;
     } catch (error) {
       console.error("Error deleting grade:", error?.response?.data?.message || error);
-      toast.error("Failed to delete grade");
+      toast.error("Network error - Failed to delete grade");
       return false;
     }
   }
