@@ -300,7 +300,7 @@ Name: "",
                   <FormField
                     label="Owner"
                     name="Owner"
-                    value={formData.Owner?.Name || formData.Owner}
+value={typeof formData.Owner === 'object' ? formData.Owner?.Name || '' : formData.Owner || ''}
                     isSystemField={true}
                   />
 
@@ -314,7 +314,7 @@ Name: "",
                   <FormField
                     label="Created By"
                     name="CreatedBy"
-                    value={formData.CreatedBy}
+value={typeof formData.CreatedBy === 'object' ? formData.CreatedBy?.Name || '' : formData.CreatedBy || ''}
                     isSystemField={true}
                   />
 
@@ -328,7 +328,7 @@ Name: "",
                   <FormField
                     label="Modified By"
                     name="ModifiedBy"
-                    value={formData.ModifiedBy}
+value={typeof formData.ModifiedBy === 'object' ? formData.ModifiedBy?.Name || '' : formData.ModifiedBy || ''}
                     isSystemField={true}
                   />
 
@@ -507,7 +507,7 @@ Name: "",
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Owner
                     </label>
-                    <p className="text-gray-900">{selectedStudent.Owner?.Name || "System"}</p>
+<p className="text-gray-900">{typeof selectedStudent.Owner === 'object' ? selectedStudent.Owner?.Name || 'System' : selectedStudent.Owner || 'System'}</p>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -519,7 +519,7 @@ Name: "",
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Created By
                     </label>
-                    <p className="text-gray-900">{selectedStudent.CreatedBy?.Name || "System"}</p>
+<p className="text-gray-900">{typeof selectedStudent.CreatedBy === 'object' ? selectedStudent.CreatedBy?.Name || 'System' : selectedStudent.CreatedBy || 'System'}</p>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -531,7 +531,7 @@ Name: "",
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Modified By
                     </label>
-<p className="text-gray-900">{selectedStudent.ModifiedBy?.Name || "System"}</p>
+<p className="text-gray-900">{typeof selectedStudent.ModifiedBy === 'object' ? selectedStudent.ModifiedBy?.Name || 'System' : selectedStudent.ModifiedBy || 'System'}</p>
                   </div>
                 </div>
 </div>

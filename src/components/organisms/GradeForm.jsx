@@ -73,7 +73,7 @@ if (editGrade) {
     
     try {
       const gradeData = {
-student_id_c: parseInt(studentId),
+student_id_c: studentId,
         assignment_name_c: formData.assignmentName.trim(),
         category_c: formData.category,
         score_c: parseFloat(formData.score),

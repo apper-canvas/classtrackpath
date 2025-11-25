@@ -122,7 +122,7 @@ onClick={() => handleSort("student_id_c")}
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-3">
                     <img
-src={student.photo_url_c}
+src={student.photo_url_c || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"}
                       alt={student.Name || `${student.first_name_c} ${student.last_name_c}`}
                       className="w-10 h-10 rounded-full object-cover border-2 border-white shadow-md"
                     />

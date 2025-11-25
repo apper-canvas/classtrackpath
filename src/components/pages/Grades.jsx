@@ -187,7 +187,7 @@ if (letterGrade?.startsWith("A")) return "success";
             <div className="mt-6 space-y-4">
               <div className="text-center">
                 <img
-src={selectedStudent.photo_url_c}
+src={selectedStudent.photo_url_c || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"}
                   alt={`${selectedStudent.first_name_c} ${selectedStudent.last_name_c}`}
                   className="w-16 h-16 rounded-full mx-auto object-cover border-2 border-white shadow-md"
                 />
@@ -227,7 +227,7 @@ src={selectedStudent.photo_url_c}
             <Card className="overflow-hidden">
               <div className="p-6 border-b border-gray-200">
                 <h3 className="text-lg font-semibold text-gray-900">
-                  {selectedStudent.firstName}'s Grades ({studentGrades.length} assignments)
+{selectedStudent.first_name_c || selectedStudent.Name}'s Grades ({studentGrades.length} assignments)
                 </h3>
               </div>
               
