@@ -36,6 +36,11 @@ class AttendanceService {
         ]
       };
       
+const apperClient = await getApperClient();
+      if (!apperClient) {
+        console.error('ApperClient not available');
+        return [];
+      }
       const response = await apperClient.fetchRecords(this.tableName, params);
       
       if (!response.success) {
@@ -109,6 +114,11 @@ class AttendanceService {
         ]
       };
 
+const apperClient = await getApperClient();
+      if (!apperClient) {
+        console.error('ApperClient not available');
+        return [];
+      }
       const response = await apperClient.fetchRecords(this.tableName, params);
       
       if (!response.success) {
@@ -148,6 +158,11 @@ class AttendanceService {
         ]
       };
 
+const apperClient = await getApperClient();
+      if (!apperClient) {
+        console.error('ApperClient not available');
+        return [];
+      }
       const response = await apperClient.fetchRecords(this.tableName, params);
       
       if (!response.success) {
@@ -362,6 +377,11 @@ class AttendanceService {
         ]
       };
 
+const apperClient = await getApperClient();
+      if (!apperClient) {
+        console.error('ApperClient not available');
+        return [];
+      }
       const response = await apperClient.fetchRecords(this.tableName, params);
       
       if (!response.success) {
