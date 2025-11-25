@@ -20,8 +20,8 @@ class AttendanceService {
 
   async getAll() {
     try {
-      const apperClient = getApperClient();
-      if (!apperClient) {
+const client = getApperClient();
+      if (!client) {
         throw new Error('ApperClient not initialized');
       }
 
@@ -135,8 +135,8 @@ const apperClient = await getApperClient();
 
   async getByDate(date) {
     try {
-      const apperClient = getApperClient();
-      if (!apperClient) {
+const client = getApperClient();
+      if (!client) {
         throw new Error('ApperClient not initialized');
       }
 
@@ -349,8 +349,8 @@ const apperClient = await getApperClient();
 
   async markAttendance(studentId, date, status, notes = "") {
     try {
-      const apperClient = getApperClient();
-      if (!apperClient) {
+const client = getApperClient();
+      if (!client) {
         throw new Error('ApperClient not initialized');
       }
 
