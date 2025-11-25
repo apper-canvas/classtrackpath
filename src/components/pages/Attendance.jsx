@@ -64,9 +64,9 @@ const Attendance = () => {
         attendanceService.calculateAttendanceRate(selectedStudent.Id)
       ]);
       
-      const presentDays = attendanceRecords.filter(r => r.status === "Present").length;
-      const absentDays = attendanceRecords.filter(r => r.status === "Absent").length;
-      const tardyDays = attendanceRecords.filter(r => r.status === "Tardy").length;
+const presentDays = attendanceRecords.filter(r => r.status_c === "Present").length;
+      const absentDays = attendanceRecords.filter(r => r.status_c === "Absent").length;
+      const tardyDays = attendanceRecords.filter(r => r.status_c === "Tardy").length;
       const totalDays = attendanceRecords.length;
       
       setAttendanceStats({
@@ -111,8 +111,8 @@ const Attendance = () => {
             >
               <option value="">Select a student...</option>
               {students.map((student) => (
-                <option key={student.Id} value={student.Id}>
-                  {student.firstName} {student.lastName}
+<option key={student.Id} value={student.Id}>
+                  {student.first_name_c} {student.last_name_c}
                 </option>
               ))}
             </Select>
@@ -120,14 +120,14 @@ const Attendance = () => {
             {selectedStudent && (
               <div className="mt-6 text-center">
                 <img
-                  src={selectedStudent.photoUrl}
-                  alt={`${selectedStudent.firstName} ${selectedStudent.lastName}`}
+src={selectedStudent.photo_url_c}
+                  alt={`${selectedStudent.first_name_c} ${selectedStudent.last_name_c}`}
                   className="w-16 h-16 rounded-full mx-auto object-cover border-2 border-white shadow-md"
                 />
                 <h4 className="mt-2 font-medium text-gray-900">
-                  {selectedStudent.firstName} {selectedStudent.lastName}
+                  {selectedStudent.first_name_c} {selectedStudent.last_name_c}
                 </h4>
-                <p className="text-sm text-gray-600">{selectedStudent.studentId}</p>
+                <p className="text-sm text-gray-600">{selectedStudent.student_id_c}</p>
               </div>
             )}
           </Card>

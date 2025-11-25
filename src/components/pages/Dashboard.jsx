@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useOutletContext } from "react-router-dom";
-import StatCard from "@/components/molecules/StatCard";
-import StudentTable from "@/components/organisms/StudentTable";
+import gradeService from "@/services/api/gradeService";
+import studentService from "@/services/api/studentService";
+import attendanceService from "@/services/api/attendanceService";
 import Loading from "@/components/ui/Loading";
 import ErrorView from "@/components/ui/ErrorView";
 import Empty from "@/components/ui/Empty";
-import studentService from "@/services/api/studentService";
-import gradeService from "@/services/api/gradeService";
-import attendanceService from "@/services/api/attendanceService";
+import StudentTable from "@/components/organisms/StudentTable";
+import Students from "@/components/pages/Students";
+import StatCard from "@/components/molecules/StatCard";
 
 const Dashboard = () => {
   const { globalSearch } = useOutletContext() || {};
@@ -31,10 +32,10 @@ const Dashboard = () => {
   useEffect(() => {
     if (globalSearch) {
       const filtered = students.filter(student =>
-        student.firstName.toLowerCase().includes(globalSearch.toLowerCase()) ||
-        student.lastName.toLowerCase().includes(globalSearch.toLowerCase()) ||
-        student.studentId.toLowerCase().includes(globalSearch.toLowerCase()) ||
-        student.email.toLowerCase().includes(globalSearch.toLowerCase())
+student.first_name_c.toLowerCase().includes(globalSearch.toLowerCase()) ||
+        student.last_name_c.toLowerCase().includes(globalSearch.toLowerCase()) ||
+        student.student_id_c.toLowerCase().includes(globalSearch.toLowerCase()) ||
+        student.email_c.toLowerCase().includes(globalSearch.toLowerCase())
       );
       setFilteredStudents(filtered);
     } else {
@@ -57,13 +58,14 @@ const Dashboard = () => {
       setFilteredStudents(studentsData);
       
       // Calculate stats
-      const activeStudents = studentsData.filter(s => s.status === "Active").length;
+const activeStudents = studentsData.filter(s => s.status_c === "Active").length;
       
-      // Calculate average GPA
-      const gradePromises = studentsData.slice(0, 5).map(student => 
-        gradeService.calculateGPA(student.Id)
+// Calculate GPAs for all students
+      const gpas = await Promise.all(
+        studentsData.map(student =>
+          gradeService.calculateGPA(student.Id)
+        )
       );
-      const gpas = await Promise.all(gradePromises);
       const validGpas = gpas.filter(gpa => gpa > 0);
       const averageGPA = validGpas.length > 0 
         ? validGpas.reduce((sum, gpa) => sum + gpa, 0) / validGpas.length

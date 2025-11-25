@@ -123,10 +123,10 @@ const Grades = () => {
   };
 
   const getGradeColor = (letterGrade) => {
-    if (letterGrade.startsWith("A")) return "success";
-    if (letterGrade.startsWith("B")) return "info";
-    if (letterGrade.startsWith("C")) return "warning";
-    if (letterGrade.startsWith("D")) return "warning";
+if (letterGrade?.startsWith("A")) return "success";
+    if (letterGrade?.startsWith("B")) return "info";
+    if (letterGrade?.startsWith("C")) return "warning";
+    if (letterGrade?.startsWith("D")) return "warning";
     return "danger";
   };
 
@@ -177,8 +177,8 @@ const Grades = () => {
           >
             <option value="">Select a student...</option>
             {students.map((student) => (
-              <option key={student.Id} value={student.Id}>
-                {student.firstName} {student.lastName}
+<option key={student.Id} value={student.Id}>
+                {student.first_name_c} {student.last_name_c}
               </option>
             ))}
           </Select>
@@ -187,14 +187,14 @@ const Grades = () => {
             <div className="mt-6 space-y-4">
               <div className="text-center">
                 <img
-                  src={selectedStudent.photoUrl}
-                  alt={`${selectedStudent.firstName} ${selectedStudent.lastName}`}
+src={selectedStudent.photo_url_c}
+                  alt={`${selectedStudent.first_name_c} ${selectedStudent.last_name_c}`}
                   className="w-16 h-16 rounded-full mx-auto object-cover border-2 border-white shadow-md"
                 />
                 <h4 className="mt-2 font-medium text-gray-900">
-                  {selectedStudent.firstName} {selectedStudent.lastName}
+                  {selectedStudent.first_name_c} {selectedStudent.last_name_c}
                 </h4>
-                <p className="text-sm text-gray-600">{selectedStudent.studentId}</p>
+                <p className="text-sm text-gray-600">{selectedStudent.student_id_c}</p>
               </div>
               
               <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 text-center">
@@ -244,29 +244,29 @@ const Grades = () => {
                       <div className="flex items-center gap-4">
                         <div className="p-2 bg-gradient-to-br from-primary to-secondary rounded-lg">
                           <ApperIcon 
-                            name={getCategoryIcon(grade.category)} 
-                            className="w-5 h-5 text-white" 
+name={getCategoryIcon(grade.category_c)} 
+                            className="w-5 h-5 text-gray-500"
                           />
                         </div>
-                        <div>
-                          <h4 className="font-medium text-gray-900">{grade.assignmentName}</h4>
-                          <p className="text-sm text-gray-600">{grade.category} • {grade.date}</p>
-                          {grade.notes && (
-                            <p className="text-sm text-gray-500 mt-1">{grade.notes}</p>
+                        <div className="flex-1">
+                          <h4 className="font-medium text-gray-900">{grade.assignment_name_c}</h4>
+                          <p className="text-sm text-gray-600">{grade.category_c} • {grade.date_c}</p>
+                          {grade.notes_c && (
+                            <p className="text-sm text-gray-500 mt-1">{grade.notes_c}</p>
                           )}
                         </div>
                       </div>
                       
-                      <div className="flex items-center gap-4">
+                      <div className="flex items-center space-x-4">
                         <div className="text-right">
                           <p className="text-lg font-semibold text-gray-900">
-                            {grade.score}/{grade.maxScore}
+                            {grade.score_c}/{grade.max_score_c}
                           </p>
-                          <p className="text-sm text-gray-600">{grade.percentage}%</p>
+                          <p className="text-sm text-gray-600">{grade.percentage_c}%</p>
                         </div>
                         
-                        <Badge variant={getGradeColor(grade.letterGrade)}>
-                          {grade.letterGrade}
+                        <Badge variant={getGradeColor(grade.letter_grade_c)}>
+                          {grade.letter_grade_c}
                         </Badge>
                         
                         <div className="flex items-center gap-1">

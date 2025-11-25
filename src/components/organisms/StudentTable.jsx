@@ -24,7 +24,7 @@ const StudentTable = ({
     }
   };
 
-  const sortedStudents = [...students].sort((a, b) => {
+const sortedStudents = [...students].sort((a, b) => {
     let aValue = a[sortField];
     let bValue = b[sortField];
     
@@ -88,11 +88,11 @@ const StudentTable = ({
               </th>
               <th className="px-6 py-4 text-left">
                 <button
-                  onClick={() => handleSort("studentId")}
+onClick={() => handleSort("student_id_c")}
                   className="flex items-center gap-2 font-medium text-gray-700 hover:text-primary transition-colors duration-200"
                 >
                   ID
-                  <SortIcon field="studentId" />
+                  <SortIcon field="student_id_c" />
                 </button>
               </th>
               <th className="px-6 py-4 text-left">
@@ -120,26 +120,26 @@ const StudentTable = ({
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-3">
                     <img
-                      src={student.photoUrl}
-                      alt={`${student.firstName} ${student.lastName}`}
+src={student.photo_url_c}
+                      alt={`${student.first_name_c} ${student.last_name_c}`}
                       className="w-10 h-10 rounded-full object-cover border-2 border-white shadow-md"
                     />
                     <div>
                       <p className="font-medium text-gray-900">
-                        {student.firstName} {student.lastName}
+                        {student.first_name_c} {student.last_name_c}
                       </p>
-                      <p className="text-sm text-gray-600">{student.email}</p>
+                      <p className="text-sm text-gray-600">{student.email_c}</p>
                     </div>
                   </div>
                 </td>
-                <td className="px-6 py-4">
-                  <span className="font-mono text-sm text-gray-700">{student.studentId}</span>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <span className="font-mono text-sm text-gray-700">{student.student_id_c}</span>
                 </td>
-                <td className="px-6 py-4">
-                  <span className="text-sm text-gray-700">{student.gradeLevel}</span>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <span className="text-sm text-gray-700">{student.grade_level_c}</span>
                 </td>
-                <td className="px-6 py-4">
-                  <StatusBadge status={student.status} />
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <StatusBadge status={student.status_c} />
                 </td>
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-2">

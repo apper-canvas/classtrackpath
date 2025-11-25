@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Chart from "react-apexcharts";
+import gradeService from "@/services/api/gradeService";
+import studentService from "@/services/api/studentService";
+import attendanceService from "@/services/api/attendanceService";
 import ApperIcon from "@/components/ApperIcon";
-import Button from "@/components/atoms/Button";
-import Card from "@/components/atoms/Card";
-import Select from "@/components/atoms/Select";
-import StatCard from "@/components/molecules/StatCard";
 import Loading from "@/components/ui/Loading";
 import ErrorView from "@/components/ui/ErrorView";
-import studentService from "@/services/api/studentService";
-import gradeService from "@/services/api/gradeService";
-import attendanceService from "@/services/api/attendanceService";
+import Select from "@/components/atoms/Select";
+import Button from "@/components/atoms/Button";
+import Card from "@/components/atoms/Card";
+import Attendance from "@/components/pages/Attendance";
+import StatCard from "@/components/molecules/StatCard";
 
 const Reports = () => {
   const [students, setStudents] = useState([]);
@@ -67,13 +68,14 @@ const Reports = () => {
 
     try {
       // Overview Stats
-      const activeStudents = students.filter(s => s.status === "Active");
+const activeStudents = students.filter(s => s.status_c === "Active");
       
-      // Calculate average GPA
-      const gpaPromises = activeStudents.slice(0, 5).map(student => 
-        gradeService.calculateGPA(student.Id)
+// Calculate GPAs
+      const gpas = await Promise.all(
+        activeStudents.map(student =>
+          gradeService.calculateGPA(student.Id)
+        )
       );
-      const gpas = await Promise.all(gpaPromises);
       const validGpas = gpas.filter(gpa => gpa > 0);
       const averageGPA = validGpas.length > 0 
         ? validGpas.reduce((sum, gpa) => sum + gpa, 0) / validGpas.length
@@ -90,20 +92,20 @@ const Reports = () => {
         : 0;
 
       // Grade distribution
-      const gradeDistribution = grades.reduce((acc, grade) => {
-        const letter = grade.letterGrade?.charAt(0) || "F";
+const gradeDistribution = grades.reduce((acc, grade) => {
+        const letter = grade.letter_grade_c?.charAt(0) || "F";
         acc[letter] = (acc[letter] || 0) + 1;
         return acc;
       }, {});
 
       // Grade analysis by category
       const gradeAnalysis = grades.reduce((acc, grade) => {
-        const category = grade.category;
+const category = grade.category_c;
         if (!acc[category]) {
           acc[category] = { total: 0, sum: 0 };
         }
         acc[category].total += 1;
-        acc[category].sum += grade.percentage;
+        acc[category].sum += grade.percentage_c;
         return acc;
       }, {});
 
@@ -113,8 +115,8 @@ const Reports = () => {
       }));
 
       // Attendance analysis by month
-      const attendanceByMonth = attendance.reduce((acc, record) => {
-        const month = record.date.substring(0, 7); // YYYY-MM
+const attendanceByMonth = attendance.reduce((acc, record) => {
+        const month = record.date_c.substring(0, 7); // YYYY-MM
         if (!acc[month]) {
           acc[month] = { present: 0, absent: 0, tardy: 0 };
         }
@@ -397,19 +399,21 @@ ${studentPerformance
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
                           <img
-                            src={student.photoUrl}
-                            alt={`${student.firstName} ${student.lastName}`}
-                            className="w-8 h-8 rounded-full object-cover mr-3"
+src={student.photo_url_c}
+                            alt={`${student.first_name_c} ${student.last_name_c}`}
+                            className="w-10 h-10 rounded-full object-cover mr-3"
                           />
                           <div>
-                            <div className="text-sm font-medium text-gray-900">
-                              {student.firstName} {student.lastName}
-                            </div>
+                            <p className="font-medium text-gray-900">
+                              {student.first_name_c} {student.last_name_c}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              Grade: {student.grade_level_c}
+                            </p>
                           </div>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {student.studentId}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          {student.student_id_c}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                         {student.gpa.toFixed(2)}

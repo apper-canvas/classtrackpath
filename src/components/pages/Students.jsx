@@ -24,13 +24,14 @@ const Students = () => {
   const [filterStatus, setFilterStatus] = useState("all");
   
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    studentId: "",
-    email: "",
-    phone: "",
-    gradeLevel: "",
-    photoUrl: ""
+first_name_c: "",
+    last_name_c: "",
+    student_id_c: "",
+    email_c: "",
+    phone_c: "",
+    grade_level_c: "",
+    photo_url_c: "",
+    enrollment_date_c: ""
   });
 
   useEffect(() => {
@@ -60,18 +61,18 @@ const Students = () => {
 
     // Apply status filter
     if (filterStatus !== "all") {
-      filtered = filtered.filter(student => 
-        student.status.toLowerCase() === filterStatus.toLowerCase()
+filtered = filtered.filter(student => 
+        student.status_c.toLowerCase() === filterStatus.toLowerCase()
       );
     }
 
     // Apply search filter
     if (globalSearch) {
       filtered = filtered.filter(student =>
-        student.firstName.toLowerCase().includes(globalSearch.toLowerCase()) ||
-        student.lastName.toLowerCase().includes(globalSearch.toLowerCase()) ||
-        student.studentId.toLowerCase().includes(globalSearch.toLowerCase()) ||
-        student.email.toLowerCase().includes(globalSearch.toLowerCase())
+student.first_name_c.toLowerCase().includes(globalSearch.toLowerCase()) ||
+        student.last_name_c.toLowerCase().includes(globalSearch.toLowerCase()) ||
+        student.student_id_c.toLowerCase().includes(globalSearch.toLowerCase()) ||
+        student.email_c.toLowerCase().includes(globalSearch.toLowerCase())
       );
     }
 
@@ -112,13 +113,14 @@ const Students = () => {
   const handleEdit = (student) => {
     setEditStudent(student);
     setFormData({
-      firstName: student.firstName,
-      lastName: student.lastName,
-      studentId: student.studentId,
-      email: student.email,
-      phone: student.phone,
-      gradeLevel: student.gradeLevel,
-      photoUrl: student.photoUrl
+first_name_c: student.first_name_c,
+      last_name_c: student.last_name_c,
+      student_id_c: student.student_id_c,
+      email_c: student.email_c,
+      phone_c: student.phone_c,
+      grade_level_c: student.grade_level_c,
+      photo_url_c: student.photo_url_c,
+      enrollment_date_c: student.enrollment_date_c
     });
     setShowForm(true);
   };
@@ -254,26 +256,26 @@ const Students = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <FormField
+<FormField
                     label="First Name"
-                    name="firstName"
-                    value={formData.firstName}
+                    name="first_name_c"
+                    value={formData.first_name_c}
                     onChange={handleInputChange}
                     required
                   />
 
                   <FormField
                     label="Last Name"
-                    name="lastName"
-                    value={formData.lastName}
+                    name="last_name_c"
+                    value={formData.last_name_c}
                     onChange={handleInputChange}
                     required
                   />
 
                   <FormField
                     label="Student ID"
-                    name="studentId"
-                    value={formData.studentId}
+                    name="student_id_c"
+                    value={formData.student_id_c}
                     onChange={handleInputChange}
                     required
                   />
@@ -281,8 +283,8 @@ const Students = () => {
                   <FormField
                     label="Grade Level"
                     type="select"
-                    name="gradeLevel"
-                    value={formData.gradeLevel}
+                    name="grade_level_c"
+                    value={formData.grade_level_c}
                     onChange={handleInputChange}
                     options={[
                       { value: "9th Grade", label: "9th Grade" },
@@ -295,24 +297,33 @@ const Students = () => {
 
                   <FormField
                     label="Email"
-                    name="email"
+                    name="email_c"
                     type="email"
-                    value={formData.email}
+                    value={formData.email_c}
                     onChange={handleInputChange}
                     required
                   />
 
                   <FormField
                     label="Phone"
-                    name="phone"
-                    value={formData.phone}
+                    name="phone_c"
+                    value={formData.phone_c}
                     onChange={handleInputChange}
                   />
 
                   <FormField
                     label="Photo URL"
-                    name="photoUrl"
-                    value={formData.photoUrl}
+                    name="photo_url_c"
+                    value={formData.photo_url_c}
+                    onChange={handleInputChange}
+                    className="md:col-span-2"
+                  />
+
+                  <FormField
+                    label="Enrollment Date"
+                    name="enrollment_date_c"
+                    type="date"
+                    value={formData.enrollment_date_c}
                     onChange={handleInputChange}
                     className="md:col-span-2"
                   />
@@ -366,43 +377,44 @@ const Students = () => {
 
                 <div className="flex items-center gap-6">
                   <img
-                    src={selectedStudent.photoUrl}
-                    alt={`${selectedStudent.firstName} ${selectedStudent.lastName}`}
+src={selectedStudent.photo_url_c}
+                    alt={`${selectedStudent.first_name_c} ${selectedStudent.last_name_c}`}
                     className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg"
                   />
                   <div>
                     <h3 className="text-2xl font-bold text-gray-900">
-                      {selectedStudent.firstName} {selectedStudent.lastName}
+                      {selectedStudent.first_name_c} {selectedStudent.last_name_c}
                     </h3>
-                    <p className="text-gray-600">{selectedStudent.studentId}</p>
-                    <p className="text-gray-600">{selectedStudent.gradeLevel}</p>
+                    <p className="text-gray-600">{selectedStudent.student_id_c}</p>
+                    <p className="text-gray-600">{selectedStudent.grade_level_c}</p>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Student Details */}
+                <div className="grid grid-cols-2 gap-6 mt-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Email
                     </label>
-                    <p className="text-gray-900">{selectedStudent.email}</p>
+                    <p className="text-gray-900">{selectedStudent.email_c}</p>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Phone
                     </label>
-                    <p className="text-gray-900">{selectedStudent.phone || "Not provided"}</p>
+                    <p className="text-gray-900">{selectedStudent.phone_c || "Not provided"}</p>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Enrollment Date
                     </label>
-                    <p className="text-gray-900">{selectedStudent.enrollmentDate}</p>
+                    <p className="text-gray-900">{selectedStudent.enrollment_date_c}</p>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Status
                     </label>
-                    <p className="text-gray-900">{selectedStudent.status}</p>
+                    <p className="text-gray-900">{selectedStudent.status_c}</p>
                   </div>
                 </div>
 

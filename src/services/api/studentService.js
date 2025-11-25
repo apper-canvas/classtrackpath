@@ -1,71 +1,357 @@
-import studentsData from "@/services/mockData/students.json";
+import { getApperClient } from '@/services/apperClient';
+import { toast } from 'react-toastify';
 
 class StudentService {
   constructor() {
-    this.students = [...studentsData];
+    this.tableName = 'students_c';
   }
 
   async getAll() {
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 300));
-    return [...this.students];
+    try {
+      const apperClient = getApperClient();
+      if (!apperClient) {
+        throw new Error('ApperClient not initialized');
+      }
+
+      const params = {
+        fields: [
+          {"field": {"Name": "Name"}},
+          {"field": {"Name": "first_name_c"}},
+          {"field": {"Name": "last_name_c"}},
+          {"field": {"Name": "student_id_c"}},
+          {"field": {"Name": "email_c"}},
+          {"field": {"Name": "phone_c"}},
+          {"field": {"Name": "grade_level_c"}},
+          {"field": {"Name": "status_c"}},
+          {"field": {"Name": "photo_url_c"}},
+          {"field": {"Name": "enrollment_date_c"}}
+        ]
+      };
+      
+      const response = await apperClient.fetchRecords(this.tableName, params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        return [];
+      }
+
+      return response.data || [];
+    } catch (error) {
+      console.error("Error fetching students:", error?.response?.data?.message || error);
+      toast.error("Failed to fetch students");
+      return [];
+    }
   }
 
   async getById(id) {
-    await new Promise(resolve => setTimeout(resolve, 200));
-    const student = this.students.find(s => s.Id === parseInt(id));
-    if (!student) {
-      throw new Error("Student not found");
+    try {
+      const apperClient = getApperClient();
+      if (!apperClient) {
+        throw new Error('ApperClient not initialized');
+      }
+
+      const params = {
+        fields: [
+          {"field": {"Name": "Name"}},
+          {"field": {"Name": "first_name_c"}},
+          {"field": {"Name": "last_name_c"}},
+          {"field": {"Name": "student_id_c"}},
+          {"field": {"Name": "email_c"}},
+          {"field": {"Name": "phone_c"}},
+          {"field": {"Name": "grade_level_c"}},
+          {"field": {"Name": "status_c"}},
+          {"field": {"Name": "photo_url_c"}},
+          {"field": {"Name": "enrollment_date_c"}}
+        ]
+      };
+
+      const response = await apperClient.getRecordById(this.tableName, parseInt(id), params);
+      
+      if (!response?.data) {
+        return null;
+      }
+      
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching student ${id}:`, error?.response?.data?.message || error);
+      toast.error("Failed to fetch student");
+      return null;
     }
-    return { ...student };
   }
 
   async create(studentData) {
-    await new Promise(resolve => setTimeout(resolve, 400));
-    const newId = Math.max(...this.students.map(s => s.Id)) + 1;
-    const newStudent = {
-      ...studentData,
-      Id: newId,
-      status: "Active"
-    };
-    this.students.push(newStudent);
-    return { ...newStudent };
+    try {
+      const apperClient = getApperClient();
+      if (!apperClient) {
+        throw new Error('ApperClient not initialized');
+      }
+
+      const preparedData = {
+        first_name_c: studentData.first_name_c,
+        last_name_c: studentData.last_name_c,
+        student_id_c: studentData.student_id_c,
+        email_c: studentData.email_c,
+        phone_c: studentData.phone_c || "",
+        grade_level_c: studentData.grade_level_c,
+        status_c: "Active",
+        photo_url_c: studentData.photo_url_c || "",
+        enrollment_date_c: studentData.enrollment_date_c || new Date().toISOString().split('T')[0]
+      };
+
+      const params = {
+        records: [preparedData]
+      };
+
+      const response = await apperClient.createRecord(this.tableName, params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        return null;
+      }
+
+      if (response.results) {
+        const successful = response.results.filter(r => r.success);
+        const failed = response.results.filter(r => !r.success);
+        
+        if (failed.length > 0) {
+          console.error(`Failed to create ${failed.length} students:`, failed);
+          failed.forEach(record => {
+            if (record.message) toast.error(record.message);
+          });
+        }
+        
+        if (successful.length > 0) {
+          toast.success('Student created successfully');
+          return successful[0].data;
+        }
+      }
+      
+      return null;
+    } catch (error) {
+      console.error("Error creating student:", error?.response?.data?.message || error);
+      toast.error("Failed to create student");
+      return null;
+    }
   }
 
   async update(id, updateData) {
-    await new Promise(resolve => setTimeout(resolve, 300));
-    const index = this.students.findIndex(s => s.Id === parseInt(id));
-    if (index === -1) {
-      throw new Error("Student not found");
+    try {
+      const apperClient = getApperClient();
+      if (!apperClient) {
+        throw new Error('ApperClient not initialized');
+      }
+
+      const preparedData = {
+        Id: parseInt(id),
+        ...updateData
+      };
+
+      const params = {
+        records: [preparedData]
+      };
+
+      const response = await apperClient.updateRecord(this.tableName, params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        return null;
+      }
+
+      if (response.results) {
+        const successful = response.results.filter(r => r.success);
+        const failed = response.results.filter(r => !r.success);
+        
+        if (failed.length > 0) {
+          console.error(`Failed to update ${failed.length} students:`, failed);
+          failed.forEach(record => {
+            if (record.message) toast.error(record.message);
+          });
+        }
+        
+        if (successful.length > 0) {
+          toast.success('Student updated successfully');
+          return successful[0].data;
+        }
+      }
+      
+      return null;
+    } catch (error) {
+      console.error("Error updating student:", error?.response?.data?.message || error);
+      toast.error("Failed to update student");
+      return null;
     }
-    this.students[index] = { ...this.students[index], ...updateData };
-    return { ...this.students[index] };
   }
 
   async delete(id) {
-    await new Promise(resolve => setTimeout(resolve, 250));
-    const index = this.students.findIndex(s => s.Id === parseInt(id));
-    if (index === -1) {
-      throw new Error("Student not found");
+    try {
+      const apperClient = getApperClient();
+      if (!apperClient) {
+        throw new Error('ApperClient not initialized');
+      }
+
+      const params = { 
+        RecordIds: [parseInt(id)]
+      };
+
+      const response = await apperClient.deleteRecord(this.tableName, params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        toast.error(response.message);
+        return false;
+      }
+
+      if (response.results) {
+        const successful = response.results.filter(r => r.success);
+        const failed = response.results.filter(r => !r.success);
+        
+        if (failed.length > 0) {
+          console.error(`Failed to delete ${failed.length} students:`, failed);
+          failed.forEach(record => {
+            if (record.message) toast.error(record.message);
+          });
+        }
+        
+        if (successful.length > 0) {
+          toast.success('Student deleted successfully');
+          return true;
+        }
+      }
+      
+      return false;
+    } catch (error) {
+      console.error("Error deleting student:", error?.response?.data?.message || error);
+      toast.error("Failed to delete student");
+      return false;
     }
-    this.students.splice(index, 1);
-    return true;
   }
 
   async search(query) {
-    await new Promise(resolve => setTimeout(resolve, 200));
-    const searchTerm = query.toLowerCase();
-    return this.students.filter(student =>
-      student.firstName.toLowerCase().includes(searchTerm) ||
-      student.lastName.toLowerCase().includes(searchTerm) ||
-      student.studentId.toLowerCase().includes(searchTerm) ||
-      student.email.toLowerCase().includes(searchTerm)
-    );
+    try {
+      const apperClient = getApperClient();
+      if (!apperClient) {
+        throw new Error('ApperClient not initialized');
+      }
+
+      const searchTerm = query.toLowerCase();
+      const params = {
+        fields: [
+          {"field": {"Name": "Name"}},
+          {"field": {"Name": "first_name_c"}},
+          {"field": {"Name": "last_name_c"}},
+          {"field": {"Name": "student_id_c"}},
+          {"field": {"Name": "email_c"}},
+          {"field": {"Name": "phone_c"}},
+          {"field": {"Name": "grade_level_c"}},
+          {"field": {"Name": "status_c"}},
+          {"field": {"Name": "photo_url_c"}},
+          {"field": {"Name": "enrollment_date_c"}}
+        ],
+        whereGroups: [{
+          "operator": "OR",
+          "subGroups": [
+            {
+              "conditions": [
+                {
+                  "fieldName": "first_name_c",
+                  "operator": "Contains",
+                  "values": [searchTerm]
+                }
+              ],
+              "operator": "OR"
+            },
+            {
+              "conditions": [
+                {
+                  "fieldName": "last_name_c", 
+                  "operator": "Contains",
+                  "values": [searchTerm]
+                }
+              ],
+              "operator": "OR"
+            },
+            {
+              "conditions": [
+                {
+                  "fieldName": "student_id_c",
+                  "operator": "Contains", 
+                  "values": [searchTerm]
+                }
+              ],
+              "operator": "OR"
+            },
+            {
+              "conditions": [
+                {
+                  "fieldName": "email_c",
+                  "operator": "Contains",
+                  "values": [searchTerm]
+                }
+              ],
+              "operator": "OR"
+            }
+          ]
+        }]
+      };
+
+      const response = await apperClient.fetchRecords(this.tableName, params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        return [];
+      }
+
+      return response.data || [];
+    } catch (error) {
+      console.error("Error searching students:", error?.response?.data?.message || error);
+      return [];
+    }
   }
 
   async getByStatus(status) {
-    await new Promise(resolve => setTimeout(resolve, 200));
-    return this.students.filter(student => student.status === status);
+    try {
+      const apperClient = getApperClient();
+      if (!apperClient) {
+        throw new Error('ApperClient not initialized');
+      }
+
+      const params = {
+        fields: [
+          {"field": {"Name": "Name"}},
+          {"field": {"Name": "first_name_c"}},
+          {"field": {"Name": "last_name_c"}},
+          {"field": {"Name": "student_id_c"}},
+          {"field": {"Name": "email_c"}},
+          {"field": {"Name": "phone_c"}},
+          {"field": {"Name": "grade_level_c"}},
+          {"field": {"Name": "status_c"}},
+          {"field": {"Name": "photo_url_c"}},
+          {"field": {"Name": "enrollment_date_c"}}
+        ],
+        where: [
+          {
+            "FieldName": "status_c",
+            "Operator": "EqualTo",
+            "Values": [status]
+          }
+        ]
+      };
+
+      const response = await apperClient.fetchRecords(this.tableName, params);
+      
+      if (!response.success) {
+        console.error(response.message);
+        return [];
+      }
+
+      return response.data || [];
+    } catch (error) {
+      console.error("Error fetching students by status:", error?.response?.data?.message || error);
+      return [];
+    }
   }
 }
 

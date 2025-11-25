@@ -27,13 +27,13 @@ const GradeForm = ({ studentId, onSubmit, onCancel, editGrade = null }) => {
   ];
 
   useEffect(() => {
-    if (editGrade) {
+if (editGrade) {
       setFormData({
-        assignmentName: editGrade.assignmentName || "",
-        category: editGrade.category || "",
-        score: editGrade.score?.toString() || "",
-        maxScore: editGrade.maxScore?.toString() || "100",
-        notes: editGrade.notes || ""
+        assignmentName: editGrade.assignment_name_c || "",
+        category: editGrade.category_c || "",
+        score: editGrade.score_c?.toString() || "",
+        maxScore: editGrade.max_score_c?.toString() || "100",
+        notes: editGrade.notes_c || ""
       });
     }
   }, [editGrade]);
@@ -73,13 +73,13 @@ const GradeForm = ({ studentId, onSubmit, onCancel, editGrade = null }) => {
     
     try {
       const gradeData = {
-        studentId: studentId.toString(),
-        assignmentName: formData.assignmentName.trim(),
-        category: formData.category,
-        score: parseFloat(formData.score),
-        maxScore: parseFloat(formData.maxScore),
-        notes: formData.notes.trim(),
-        date: new Date().toISOString().split('T')[0]
+student_id_c: parseInt(studentId),
+        assignment_name_c: formData.assignmentName.trim(),
+        category_c: formData.category,
+        score_c: parseFloat(formData.score),
+        max_score_c: parseFloat(formData.maxScore),
+        notes_c: formData.notes.trim(),
+        date_c: new Date().toISOString().split('T')[0]
       };
 
       let result;

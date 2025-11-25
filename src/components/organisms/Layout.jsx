@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
+import { useAuth } from "@/layouts/Root";
 import Header from "@/components/organisms/Header";
 import Sidebar from "@/components/organisms/Sidebar";
 import MobileSidebar from "@/components/organisms/MobileSidebar";
@@ -8,7 +9,7 @@ import ApperIcon from "@/components/ApperIcon";
 const Layout = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [globalSearch, setGlobalSearch] = useState("");
-
+  const { logout } = useAuth();
   const handleMobileMenuToggle = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
@@ -43,8 +44,8 @@ const Layout = () => {
               </button>
               
               {/* Header content */}
-              <div className="flex-1">
-                <Header onSearch={handleGlobalSearch} />
+<div className="flex-1">
+                <Header onSearch={handleGlobalSearch} logout={logout} />
               </div>
             </div>
           </div>

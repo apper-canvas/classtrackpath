@@ -1,14 +1,14 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import ApperIcon from "@/components/ApperIcon";
 import Button from "@/components/atoms/Button";
 import SearchBar from "@/components/molecules/SearchBar";
 
-const Header = ({ onSearch }) => {
-  const navigate = useNavigate();
+const Header = ({ onSearch, logout }) => {
+  const [showNotifications, setShowNotifications] = useState(false);
 
   const handleAddStudent = () => {
-    navigate("/students");
+    // Navigate to add student page or open modal
+    console.log('Add student clicked');
   };
 
   return (
@@ -19,24 +19,29 @@ const Header = ({ onSearch }) => {
             <h1 className="text-2xl font-bold gradient-text">ClassTrack</h1>
             <p className="text-sm text-gray-600">Student Management System</p>
           </div>
-          
           <div className="flex items-center gap-4">
             <SearchBar
               onSearch={onSearch}
               placeholder="Search students..."
-              className="w-64 hidden md:block"
-            />
-            
-            <Button
-              onClick={handleAddStudent}
-              className="flex items-center gap-2"
-            >
+              className="w-64 hidden md:block" />
+            <Button onClick={handleAddStudent} className="flex items-center gap-2">
               <ApperIcon name="UserPlus" className="w-4 h-4" />
               <span className="hidden sm:inline">Add Student</span>
             </Button>
-            
-            <button className="p-2 text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition-colors duration-200">
+            <button
+              className="p-2 text-gray-600 hover:text-primary hover:bg-gray-50 rounded-lg transition-colors duration-200">
               <ApperIcon name="Bell" className="w-5 h-5" />
+            </button>
+            {/* Logout Button */}
+            <button
+              onClick={() => {
+                if (window.confirm("Are you sure you want to logout?")) {
+                  logout();
+                }
+              }}
+              className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200"
+              title="Logout">
+              <ApperIcon name="LogOut" className="w-5 h-5" />
             </button>
           </div>
         </div>

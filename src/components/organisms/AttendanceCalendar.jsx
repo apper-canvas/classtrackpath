@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { format, startOfMonth, endOfMonth, eachDayOfInterval, getDay, isSameMonth, isSameDay } from "date-fns";
+import React, { useEffect, useState } from "react";
+import { eachDayOfInterval, endOfMonth, format, getDay, isSameDay, isSameMonth, startOfMonth } from "date-fns";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
-import ApperIcon from "@/components/ApperIcon";
-import Card from "@/components/atoms/Card";
-import Button from "@/components/atoms/Button";
 import attendanceService from "@/services/api/attendanceService";
+import ApperIcon from "@/components/ApperIcon";
+import Button from "@/components/atoms/Button";
+import Card from "@/components/atoms/Card";
 
 const AttendanceCalendar = ({ studentId, onAttendanceChange }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [attendance, setAttendance] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (studentId) {
@@ -22,26 +23,29 @@ const AttendanceCalendar = ({ studentId, onAttendanceChange }) => {
     if (!studentId) return;
     
     setLoading(true);
+    setError(null);
     try {
       const data = await attendanceService.getByStudentId(studentId);
       setAttendance(data);
+      setLoading(false);
     } catch (error) {
-      toast.error("Failed to load attendance data");
-    } finally {
+      console.error("Error fetching attendance:", error);
+      setError("Failed to load attendance data");
       setLoading(false);
     }
   };
 
   const getAttendanceForDate = (date) => {
-    const dateStr = format(date, "yyyy-MM-dd");
-    return attendance.find(record => record.date === dateStr);
+    const dateStr = format(date, 'yyyy-MM-dd');
+    return attendance.find(record => record.date_c === dateStr);
   };
 
-  const handleStatusClick = async (date, currentStatus) => {
+const handleStatusClick = async (date, currentStatus) => {
     const dateStr = format(date, "yyyy-MM-dd");
     const statusCycle = ["Present", "Absent", "Tardy", null];
     const currentIndex = statusCycle.indexOf(currentStatus);
     const newStatus = statusCycle[(currentIndex + 1) % statusCycle.length];
+    const existingRecord = attendance.find(record => record.date_c === dateStr);
 
     try {
       if (newStatus) {
@@ -50,17 +54,21 @@ const AttendanceCalendar = ({ studentId, onAttendanceChange }) => {
           dateStr,
           newStatus
         );
-        setAttendance(prev => {
-          const filtered = prev.filter(record => record.date !== dateStr);
-          return [...filtered, result];
-        });
-        toast.success(`Marked as ${newStatus.toLowerCase()}`);
+        
+        if (result) {
+          setAttendance(prev => {
+            const filtered = prev.filter(record => record.date_c !== dateStr);
+            return [...filtered, result];
+          });
+          toast.success(`Marked as ${newStatus}`);
+        }
       } else {
-        // Remove attendance record
-        const existingRecord = getAttendanceForDate(date);
+        // Remove the attendance record
         if (existingRecord) {
+          setLoading(true);
           await attendanceService.delete(existingRecord.Id);
-          setAttendance(prev => prev.filter(record => record.date !== dateStr));
+          setAttendance(prev => prev.filter(record => record.date_c !== dateStr));
+          setLoading(false);
           toast.success("Attendance removed");
         }
       }
@@ -69,6 +77,7 @@ const AttendanceCalendar = ({ studentId, onAttendanceChange }) => {
         onAttendanceChange();
       }
     } catch (error) {
+      console.error("Error updating attendance:", error);
       toast.error("Failed to update attendance");
     }
   };
@@ -159,7 +168,7 @@ const AttendanceCalendar = ({ studentId, onAttendanceChange }) => {
         
         {days.map((date) => {
           const attendanceRecord = getAttendanceForDate(date);
-          const status = attendanceRecord?.status;
+const status = attendanceRecord?.status_c;
           const isToday = isSameDay(date, new Date());
           const isPastDate = date <= new Date();
 
