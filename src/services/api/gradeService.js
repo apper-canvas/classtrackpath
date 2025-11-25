@@ -1,5 +1,7 @@
-import { getApperClient } from '@/services/apperClient';
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
+import React from "react";
+import { getApperClient } from "@/services/apperClient";
+import { create, getAll, getById, update } from "@/services/api/activityService";
 
 class GradeService {
   constructor() {
@@ -21,7 +23,7 @@ class GradeService {
 async getAll() {
     try {
       const apperClient = await getApperClient();
-      if (!apperClient) {
+if (!apperClient) {
         console.error("ApperClient initialization failed");
         toast.error("Database connection failed");
         return [];
@@ -61,7 +63,7 @@ async getAll() {
 async getById(id) {
     try {
       const apperClient = await getApperClient();
-      if (!apperClient) {
+if (!apperClient) {
         console.error("ApperClient initialization failed");
         toast.error("Database connection failed");
         return null;
@@ -99,7 +101,7 @@ async getById(id) {
 async getByStudentId(studentId) {
     try {
       const apperClient = await getApperClient();
-      if (!apperClient) {
+if (!apperClient) {
         console.error("ApperClient initialization failed");
         toast.error("Database connection failed");
         return [];
@@ -154,7 +156,6 @@ async create(gradeData) {
 
       const percentage = Math.round((gradeData.score_c / gradeData.max_score_c) * 100);
       const letterGrade = this.calculateLetterGrade(percentage);
-
       const preparedData = this.prepareLookupFields({
         assignment_name_c: gradeData.assignment_name_c,
         category_c: gradeData.category_c,
@@ -324,10 +325,13 @@ async delete(id) {
   }
 
 async calculateGPA(studentId) {
-    try {
+try {
       const studentGrades = await this.getByStudentId(studentId);
       
-      if (studentGrades.length === 0) return 0;
+      // Handle empty or invalid grades array
+      if (!studentGrades || !Array.isArray(studentGrades) || studentGrades.length === 0) {
+        return 0;
+      }
       
       const gradePoints = {
         "A+": 4.0, "A": 4.0, "A-": 3.7,
@@ -337,13 +341,21 @@ async calculateGPA(studentId) {
         "F": 0.0
       };
       
-      const totalPoints = studentGrades.reduce((sum, grade) => {
-        return sum + (gradePoints[grade.letter_grade_c] || 0);
+      const validGrades = studentGrades.filter(grade => grade && grade.letter_grade_c);
+      
+      if (validGrades.length === 0) {
+        return 0;
+      }
+      
+      const totalPoints = validGrades.reduce((sum, grade) => {
+        const gradeValue = gradePoints[grade.letter_grade_c];
+        return sum + (gradeValue !== undefined ? gradeValue : 0);
       }, 0);
       
-      return Math.round((totalPoints / studentGrades.length) * 100) / 100;
+      return Math.round((totalPoints / validGrades.length) * 100) / 100;
     } catch (error) {
       console.error("Error calculating GPA:", error);
+      toast.error("Failed to calculate GPA");
       return 0;
     }
   }

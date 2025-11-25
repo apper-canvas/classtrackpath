@@ -62,16 +62,22 @@ const Grades = () => {
   const loadStudentGrades = async () => {
     if (!selectedStudent) return;
     
-    try {
+try {
+      setStudentGrades([]);
+      setStudentGPA(0);
+      
       const [grades, gpa] = await Promise.all([
         gradeService.getByStudentId(selectedStudent.Id),
         gradeService.calculateGPA(selectedStudent.Id)
       ]);
       
-      setStudentGrades(grades);
-      setStudentGPA(gpa);
+      setStudentGrades(grades || []);
+      setStudentGPA(gpa || 0);
     } catch (error) {
-      toast.error("Failed to load student grades");
+      console.error("Error loading student grades:", error);
+      toast.error("Failed to load student grades. Please try again.");
+      setStudentGrades([]);
+      setStudentGPA(0);
     }
   };
 
@@ -95,9 +101,14 @@ const Grades = () => {
         await gradeService.delete(gradeId);
         setStudentGrades(prev => prev.filter(g => g.Id !== gradeId));
         // Recalculate GPA
-        if (selectedStudent) {
-          const newGPA = await gradeService.calculateGPA(selectedStudent.Id);
-          setStudentGPA(newGPA);
+if (selectedStudent) {
+          try {
+            const newGPA = await gradeService.calculateGPA(selectedStudent.Id);
+            setStudentGPA(newGPA || 0);
+          } catch (error) {
+            console.error("Error recalculating GPA:", error);
+            // Don't show toast error here as the grade was already saved successfully
+          }
         }
         toast.success("Grade deleted successfully");
       } catch (error) {
@@ -114,8 +125,13 @@ const Grades = () => {
     }
     
     // Recalculate GPA
-    if (selectedStudent) {
-      gradeService.calculateGPA(selectedStudent.Id).then(setStudentGPA);
+if (selectedStudent) {
+      gradeService.calculateGPA(selectedStudent.Id)
+        .then(gpa => setStudentGPA(gpa || 0))
+        .catch(error => {
+          console.error("Error calculating GPA:", error);
+          setStudentGPA(0);
+        });
     }
     
     setShowGradeForm(false);
