@@ -17,9 +17,9 @@ const Dashboard = lazy(() => import("@/components/pages/Dashboard"));
 const Students = lazy(() => import("@/components/pages/Students"));
 const Grades = lazy(() => import("@/components/pages/Grades"));
 const Attendance = lazy(() => import("@/components/pages/Attendance"));
+const Activity = lazy(() => import("@/components/pages/Activity"));
 const Reports = lazy(() => import("@/components/pages/Reports"));
 const NotFound = lazy(() => import("@/components/pages/NotFound"));
-
 // Loading fallback component
 const LoadingFallback = () => (
   <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
@@ -113,6 +113,10 @@ const mainRoutes = [
   createRoute({
     path: "attendance", 
     element: <Attendance />
+  }),
+createRoute({
+    path: "activities",
+    element: <Activity />
   }),
   createRoute({
     path: "reports",

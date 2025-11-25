@@ -6,7 +6,8 @@ const Navigation = ({ className = "" }) => {
     { to: "", icon: "LayoutDashboard", label: "Dashboard" },
     { to: "students", icon: "Users", label: "Students" },
     { to: "grades", icon: "BookOpen", label: "Grades" },
-    { to: "attendance", icon: "Calendar", label: "Attendance" },
+{ to: "attendance", icon: "Calendar", label: "Attendance" },
+    { to: "activities", icon: "Activity", label: "Activities" },
     { to: "reports", icon: "BarChart3", label: "Reports" }
   ];
 

@@ -61,6 +61,19 @@
           }
         ]
       },
+"redirectOnDeny": "/login"
+    }
+  },
+  "/activities": {
+    "allow": {
+      "when": {
+        "conditions": [
+          {
+            "label": "User must be authenticated to view activities",
+            "rule": "authenticated"
+          }
+        ]
+      },
       "redirectOnDeny": "/login"
     }
   },
