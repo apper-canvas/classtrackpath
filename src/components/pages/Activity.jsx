@@ -27,7 +27,9 @@ const Activity = () => {
     type: 'All'
   });
 
-  const [formData, setFormData] = useState({
+const [formData, setFormData] = useState({
+    Name: '',
+    Tags: '',
     title_c: '',
     activity_type_c: 'Task',
     due_date_c: '',
@@ -78,7 +80,9 @@ const Activity = () => {
   };
 
   const resetForm = () => {
-    setFormData({
+setFormData({
+      Name: '',
+      Tags: '',
       title_c: '',
       activity_type_c: 'Task',
       due_date_c: '',
@@ -92,8 +96,10 @@ const Activity = () => {
   };
 
   const handleEdit = (activity) => {
-    setEditingActivity(activity);
+setEditingActivity(activity);
     setFormData({
+      Name: activity.Name || '',
+      Tags: activity.Tags || '',
       title_c: activity.title_c || '',
       activity_type_c: activity.activity_type_c || 'Task',
       due_date_c: activity.due_date_c ? activity.due_date_c.split('T')[0] : '',
@@ -244,7 +250,27 @@ const Activity = () => {
             {editingActivity ? 'Edit Activity' : 'New Activity'}
           </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormField
+                label="Name"
+                type="text"
+                required
+                value={formData.Name}
+                onChange={(e) => setFormData(prev => ({
+                  ...prev,
+                  Name: e.target.value
+                }))}
+              />
+              <FormField
+                label="Tags"
+                type="text"
+                value={formData.Tags}
+                onChange={(e) => setFormData(prev => ({
+                  ...prev,
+                  Tags: e.target.value
+                }))}
+                placeholder="Enter tags separated by commas"
+              />
               <FormField
                 label="Title"
                 type="text"
@@ -364,8 +390,8 @@ const Activity = () => {
           {activities.map((activity) => (
             <Card key={activity.Id} className="p-4 hover:shadow-md transition-shadow">
               <div className="flex justify-between items-start mb-3">
-                <h3 className="font-semibold text-gray-900 truncate">
-                  {activity.title_c}
+<h3 className="font-semibold text-gray-900 truncate">
+                  {activity.Name || activity.title_c}
                 </h3>
                 <div className="flex gap-1 ml-2">
                   <button
@@ -384,6 +410,12 @@ const Activity = () => {
               </div>
 
               <div className="space-y-2 mb-3">
+                {activity.Tags && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-500">Tags:</span>
+                    <span className="text-gray-900 truncate">{activity.Tags}</span>
+                  </div>
+                )}
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-500">Type:</span>
                   <span className="text-gray-900">{activity.activity_type_c}</span>
@@ -401,6 +433,40 @@ const Activity = () => {
                     <span className="text-gray-500">Student:</span>
                     <span className="text-gray-900 truncate">
                       {activity.related_to_c.Name}
+                    </span>
+                  </div>
+                )}
+                {activity.Owner?.Name && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-500">Owner:</span>
+                    <span className="text-gray-900 truncate">{activity.Owner.Name}</span>
+                  </div>
+                )}
+                {activity.CreatedBy?.Name && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-500">Created By:</span>
+                    <span className="text-gray-900 truncate">{activity.CreatedBy.Name}</span>
+                  </div>
+                )}
+                {activity.CreatedOn && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-500">Created On:</span>
+                    <span className="text-gray-900">
+                      {format(new Date(activity.CreatedOn), 'MMM dd, yyyy')}
+                    </span>
+                  </div>
+                )}
+                {activity.ModifiedBy?.Name && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-500">Modified By:</span>
+                    <span className="text-gray-900 truncate">{activity.ModifiedBy.Name}</span>
+                  </div>
+                )}
+                {activity.ModifiedOn && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-500">Modified On:</span>
+                    <span className="text-gray-900">
+                      {format(new Date(activity.ModifiedOn), 'MMM dd, yyyy')}
                     </span>
                   </div>
                 )}
