@@ -216,4 +216,3 @@ class ClassService {
 }
 
 export default new ClassService();
-export default new ClassService();

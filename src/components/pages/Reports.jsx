@@ -237,215 +237,201 @@ ${studentPerformance
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
+    {/* Header */}
+    <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold gradient-text">Reports</h1>
-          <p className="text-gray-600">Analyze class performance and generate reports</p>
+            <h1 className="text-3xl font-bold gradient-text">Reports</h1>
+            <p className="text-gray-600">Analyze class performance and generate reports</p>
         </div>
-        <Button
-          onClick={exportReport}
-          className="flex items-center gap-2"
-        >
-          <ApperIcon name="Download" className="w-4 h-4" />
-          Export Report
-        </Button>
-      </div>
-
-      {/* Report Type Selection */}
-      <Card className="p-4">
+        <Button onClick={exportReport} className="flex items-center gap-2">
+            <ApperIcon name="Download" className="w-4 h-4" />Export Report
+                    </Button>
+    </div>
+    {/* Report Type Selection */}
+    <Card className="p-4">
         <div className="flex items-center gap-4">
-          <label className="text-sm font-medium text-gray-700">Report Type:</label>
-          <Select
-            value={reportType}
-            onChange={(e) => setReportType(e.target.value)}
-            className="w-48"
-          >
-            <option value="overview">Class Overview</option>
-            <option value="grades">Grade Analysis</option>
-            <option value="attendance">Attendance Trends</option>
-            <option value="student">Student Performance</option>
-          </Select>
+            <label className="text-sm font-medium text-gray-700">Report Type:</label>
+            <Select
+                value={reportType}
+                onChange={e => setReportType(e.target.value)}
+                className="w-48">
+                <option value="overview">Class Overview</option>
+                <option value="grades">Grade Analysis</option>
+                <option value="attendance">Attendance Trends</option>
+                <option value="student">Student Performance</option>
+            </Select>
         </div>
-      </Card>
-
-      {/* Overview Report */}
-      {reportType === "overview" && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="space-y-6"
-        >
-          {/* Overview Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    </Card>
+    {/* Overview Report */}
+    {reportType === "overview" && <motion.div
+        initial={{
+            opacity: 0,
+            y: 20
+        }}
+        animate={{
+            opacity: 1,
+            y: 0
+        }}
+        className="space-y-6">
+        {/* Overview Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <StatCard
-              title="Total Students"
-              value={reportData.overviewStats.totalStudents}
-              icon="Users"
-              color="blue"
-            />
+                title="Total Students"
+                value={reportData.overviewStats.totalStudents}
+                icon="Users"
+                color="blue" />
             <StatCard
-              title="Average GPA"
-              value={reportData.overviewStats.averageGPA.toFixed(2)}
-              icon="BookOpen"
-              color="green"
-            />
+                title="Average GPA"
+                value={reportData.overviewStats.averageGPA.toFixed(2)}
+                icon="BookOpen"
+                color="green" />
             <StatCard
-              title="Attendance Rate"
-              value={`${reportData.overviewStats.averageAttendance}%`}
-              icon="Calendar"
-              color="yellow"
-            />
+                title="Attendance Rate"
+                value={`${reportData.overviewStats.averageAttendance}%`}
+                icon="Calendar"
+                color="yellow" />
             <StatCard
-              title="Grade Distribution"
-              value={`${Object.keys(reportData.overviewStats.gradeDistribution).length} levels`}
-              icon="BarChart3"
-              color="purple"
-            />
-          </div>
-
-          {/* Grade Distribution Chart */}
-          <Card className="p-6">
+                title="Grade Distribution"
+                value={`${Object.keys(reportData.overviewStats.gradeDistribution).length} levels`}
+                icon="BarChart3"
+                color="purple" />
+        </div>
+        {/* Grade Distribution Chart */}
+        <Card className="p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Grade Distribution</h3>
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-              {Object.entries(reportData.overviewStats.gradeDistribution).map(([grade, count]) => (
-                <div key={grade} className="text-center">
-                  <div className="text-2xl font-bold text-primary">{count}</div>
-                  <div className="text-sm text-gray-600">Grade {grade}</div>
-                </div>
-              ))}
+                {Object.entries(reportData.overviewStats.gradeDistribution).map(([grade, count]) => <div key={grade} className="text-center">
+                    <div className="text-2xl font-bold text-primary">{count}</div>
+                    <div className="text-sm text-gray-600">Grade {grade}</div>
+                </div>)}
             </div>
-          </Card>
-        </motion.div>
-      )}
-
-      {/* Grade Analysis Report */}
-      {reportType === "grades" && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="space-y-6"
-        >
-          <Card className="p-6">
+        </Card>
+    </motion.div>}
+    {/* Grade Analysis Report */}
+    {reportType === "grades" && <motion.div
+        initial={{
+            opacity: 0,
+            y: 20
+        }}
+        animate={{
+            opacity: 1,
+            y: 0
+        }}
+        className="space-y-6">
+        <Card className="p-6">
             <Chart
-              options={gradeChartOptions}
-              series={gradeChartSeries}
-              type="bar"
-              height={400}
-            />
-          </Card>
-        </motion.div>
-      )}
-
-      {/* Attendance Analysis Report */}
-      {reportType === "attendance" && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="space-y-6"
-        >
-          <Card className="p-6">
+                options={gradeChartOptions}
+                series={gradeChartSeries}
+                type="bar"
+                height={400} />
+        </Card>
+    </motion.div>}
+    {/* Attendance Analysis Report */}
+    {reportType === "attendance" && <motion.div
+        initial={{
+            opacity: 0,
+            y: 20
+        }}
+        animate={{
+            opacity: 1,
+            y: 0
+        }}
+        className="space-y-6">
+        <Card className="p-6">
             <Chart
-              options={attendanceChartOptions}
-              series={attendanceChartSeries}
-              type="line"
-              height={400}
-            />
-          </Card>
-        </motion.div>
-      )}
-
-      {/* Student Performance Report */}
-      {reportType === "student" && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="space-y-6"
-        >
-          <Card className="overflow-hidden">
+                options={attendanceChartOptions}
+                series={attendanceChartSeries}
+                type="line"
+                height={400} />
+        </Card>
+    </motion.div>}
+    {/* Student Performance Report */}
+    {reportType === "student" && <motion.div
+        initial={{
+            opacity: 0,
+            y: 20
+        }}
+        animate={{
+            opacity: 1,
+            y: 0
+        }}
+        className="space-y-6">
+        <Card className="overflow-hidden">
             <div className="p-6 border-b border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900">Student Performance Summary</h3>
+                <h3 className="text-lg font-semibold text-gray-900">Student Performance Summary</h3>
             </div>
             <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Student
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Student ID
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      GPA
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Attendance
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Performance
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                  {reportData.studentPerformance.map((student, index) => (
-                    <motion.tr
-                      key={student.Id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.05 }}
-                      className="hover:bg-gray-50"
-                    >
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center">
-                          <img
-src={student.photo_url_c}
-                            alt={`${student.first_name_c} ${student.last_name_c}`}
-                            className="w-10 h-10 rounded-full object-cover mr-3"
-                          />
-                          <div>
-                            <p className="font-medium text-gray-900">
-                              {student.first_name_c} {student.last_name_c}
-                            </p>
-                            <p className="text-sm text-gray-600">
-                              Grade: {student.grade_level_c}
-                            </p>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {student.student_id_c}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {student.gpa.toFixed(2)}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {student.attendanceRate}%
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                          student.gpa >= 3.5 && student.attendanceRate >= 90 
-                            ? "bg-green-100 text-green-800"
-                            : student.gpa >= 3.0 && student.attendanceRate >= 80
-                            ? "bg-yellow-100 text-yellow-800"
-                            : "bg-red-100 text-red-800"
-                        }`}>
-                          {student.gpa >= 3.5 && student.attendanceRate >= 90 
-                            ? "Excellent"
-                            : student.gpa >= 3.0 && student.attendanceRate >= 80
-                            ? "Good"
-                            : "Needs Attention"
-                          }
-                        </span>
-                      </td>
-                    </motion.tr>
-                  ))}
-                </tbody>
-              </table>
+                <table className="w-full">
+                    <thead className="bg-gray-50">
+                        <tr>
+                            <th
+                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student
+                                                    </th>
+                            <th
+                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student ID
+                                                    </th>
+                            <th
+                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">GPA
+                                                    </th>
+                            <th
+                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Attendance
+                                                    </th>
+                            <th
+                                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Performance
+                                                    </th>
+                        </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200">
+                        {reportData.studentPerformance.map((student, index) => <motion.tr
+                            key={student.Id}
+                            initial={{
+                                opacity: 0,
+                                y: 20
+                            }}
+                            animate={{
+                                opacity: 1,
+                                y: 0
+                            }}
+                            transition={{
+                                delay: index * 0.05
+                            }}
+                            className="hover:bg-gray-50">
+                            <td className="px-6 py-4 whitespace-nowrap">
+                                <div className="flex items-center">
+                                    <img
+                                        src={student.photo_url_c}
+                                        alt={`${student.first_name_c} ${student.last_name_c}`}
+                                        className="w-10 h-10 rounded-full object-cover mr-3" />
+                                    <div>
+                                        <p className="font-medium text-gray-900">
+                                            {student.first_name_c} {student.last_name_c}
+                                        </p>
+                                        <p className="text-sm text-gray-600">Grade: {student.grade_level_c}
+                                        </p>
+                                    </div>
+                                </div></td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                {student.student_id_c}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                {student.gpa.toFixed(2)}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                {student.attendanceRate}%
+                                                      </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                                <span
+                                    className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${student.gpa >= 3.5 && student.attendanceRate >= 90 ? "bg-green-100 text-green-800" : student.gpa >= 3.0 && student.attendanceRate >= 80 ? "bg-yellow-100 text-yellow-800" : "bg-red-100 text-red-800"}`}>
+                                    {student.gpa >= 3.5 && student.attendanceRate >= 90 ? "Excellent" : student.gpa >= 3.0 && student.attendanceRate >= 80 ? "Good" : "Needs Attention"}
+                                </span>
+                            </td>
+                        </motion.tr>)}
+                    </tbody>
+                </table>
             </div>
-          </Card>
-        </motion.div>
-      )}
-    </div>
+        </Card>
+    </motion.div>}
+</div>
   );
 };
 
