@@ -26,6 +26,11 @@ const Students = () => {
 const [formData, setFormData] = useState({
     Name: "",
     Tags: "",
+    Owner: "",
+    CreatedOn: "",
+    CreatedBy: "",
+    ModifiedOn: "",
+    ModifiedBy: "",
     first_name_c: "",
     last_name_c: "",
     student_id_c: "",
@@ -117,6 +122,11 @@ const studentData = {
 setFormData({
       Name: student.Name || "",
       Tags: student.Tags || "",
+      Owner: student.Owner || "",
+      CreatedOn: student.CreatedOn || "",
+      CreatedBy: student.CreatedBy || "",
+      ModifiedOn: student.ModifiedOn || "",
+      ModifiedBy: student.ModifiedBy || "",
       first_name_c: student.first_name_c || "",
       last_name_c: student.last_name_c || "",
       student_id_c: student.student_id_c || "",
@@ -149,6 +159,11 @@ setFormData({
     setFormData({
 Name: "",
       Tags: "",
+      Owner: "",
+      CreatedOn: "",
+      CreatedBy: "",
+      ModifiedOn: "",
+      ModifiedBy: "",
       first_name_c: "",
       last_name_c: "",
       student_id_c: "",
@@ -279,6 +294,42 @@ Name: "",
                     onChange={handleInputChange}
                     placeholder="Enter comma-separated tags"
                     className="md:col-span-2"
+                  />
+
+                  {/* System Fields - Read Only */}
+                  <FormField
+                    label="Owner"
+                    name="Owner"
+                    value={formData.Owner?.Name || formData.Owner}
+                    isSystemField={true}
+                  />
+
+                  <FormField
+                    label="Created On"
+                    name="CreatedOn"
+                    value={formData.CreatedOn}
+                    isSystemField={true}
+                  />
+
+                  <FormField
+                    label="Created By"
+                    name="CreatedBy"
+                    value={formData.CreatedBy}
+                    isSystemField={true}
+                  />
+
+                  <FormField
+                    label="Modified On"
+                    name="ModifiedOn"
+                    value={formData.ModifiedOn}
+                    isSystemField={true}
+                  />
+
+                  <FormField
+                    label="Modified By"
+                    name="ModifiedBy"
+                    value={formData.ModifiedBy}
+                    isSystemField={true}
                   />
 
                   <FormField
