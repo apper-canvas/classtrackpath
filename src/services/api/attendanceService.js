@@ -1,5 +1,7 @@
-import { getApperClient } from '@/services/apperClient';
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
+import React from "react";
+import { getApperClient } from "@/services/apperClient";
+import { create, getAll, getById, update } from "@/services/api/activityService";
 
 class AttendanceService {
   constructor() {
@@ -18,11 +20,12 @@ class AttendanceService {
     return prepared;
   }
 
-  async getAll() {
+async getAll() {
     try {
-const client = getApperClient();
-      if (!client) {
-        throw new Error('ApperClient not initialized');
+      const apperClient = await getApperClient();
+      if (!apperClient) {
+        console.error('ApperClient not available');
+        return [];
       }
 
       const params = {
@@ -36,11 +39,6 @@ const client = getApperClient();
         ]
       };
       
-const apperClient = await getApperClient();
-      if (!apperClient) {
-        console.error('ApperClient not available');
-        return [];
-      }
       const response = await apperClient.fetchRecords(this.tableName, params);
       
       if (!response.success) {
@@ -89,11 +87,12 @@ const apperClient = await getApperClient();
     }
   }
 
-  async getByStudentId(studentId) {
+async getByStudentId(studentId) {
     try {
-      const apperClient = getApperClient();
+      const apperClient = await getApperClient();
       if (!apperClient) {
-        throw new Error('ApperClient not initialized');
+        console.error('ApperClient not available');
+        return [];
       }
 
       const params = {
@@ -114,11 +113,6 @@ const apperClient = await getApperClient();
         ]
       };
 
-const apperClient = await getApperClient();
-      if (!apperClient) {
-        console.error('ApperClient not available');
-        return [];
-      }
       const response = await apperClient.fetchRecords(this.tableName, params);
       
       if (!response.success) {
@@ -133,11 +127,12 @@ const apperClient = await getApperClient();
     }
   }
 
-  async getByDate(date) {
+async getByDate(date) {
     try {
-const client = getApperClient();
-      if (!client) {
-        throw new Error('ApperClient not initialized');
+      const apperClient = await getApperClient();
+      if (!apperClient) {
+        console.error('ApperClient not available');
+        return [];
       }
 
       const params = {
@@ -158,11 +153,6 @@ const client = getApperClient();
         ]
       };
 
-const apperClient = await getApperClient();
-      if (!apperClient) {
-        console.error('ApperClient not available');
-        return [];
-      }
       const response = await apperClient.fetchRecords(this.tableName, params);
       
       if (!response.success) {
@@ -347,11 +337,12 @@ const apperClient = await getApperClient();
     }
   }
 
-  async markAttendance(studentId, date, status, notes = "") {
+async markAttendance(studentId, date, status, notes = "") {
     try {
-const client = getApperClient();
-      if (!client) {
-        throw new Error('ApperClient not initialized');
+      const apperClient = await getApperClient();
+      if (!apperClient) {
+        console.error('ApperClient not available');
+        return null;
       }
 
       // Check if record already exists for this student and date
@@ -377,11 +368,6 @@ const client = getApperClient();
         ]
       };
 
-const apperClient = await getApperClient();
-      if (!apperClient) {
-        console.error('ApperClient not available');
-        return [];
-      }
       const response = await apperClient.fetchRecords(this.tableName, params);
       
       if (!response.success) {
