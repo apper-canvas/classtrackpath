@@ -483,7 +483,7 @@ Name: "",
 <p className="text-gray-900">{selectedStudent.ModifiedBy?.Name || "System"}</p>
                   </div>
                 </div>
-</div>
+              </div>
 
                 <div className="flex justify-end gap-3">
                   <Button
@@ -495,6 +495,8 @@ Name: "",
                   >
                     Edit Student
                   </Button>
+<Button
+                    variant="outline"
                     onClick={() => setSelectedStudent(null)}
                   >
                     Close
