@@ -35,8 +35,9 @@ async getAll() {
           {"field": {"Name": "score_c"}},
           {"field": {"Name": "max_score_c"}},
           {"field": {"Name": "percentage_c"}},
-          {"field": {"Name": "letter_grade_c"}},
+{"field": {"Name": "letter_grade_c"}},
           {"field": {"Name": "notes_c"}},
+          {"field": {"Name": "description_c"}},
           {"field": {"Name": "student_id_c"}}
         ]
       };
@@ -73,9 +74,10 @@ async getById(id) {
           {"field": {"Name": "date_c"}},
           {"field": {"Name": "score_c"}},
           {"field": {"Name": "max_score_c"}},
-          {"field": {"Name": "percentage_c"}},
+{"field": {"Name": "percentage_c"}},
           {"field": {"Name": "letter_grade_c"}},
           {"field": {"Name": "notes_c"}},
+          {"field": {"Name": "description_c"}},
           {"field": {"Name": "student_id_c"}}
         ]
       };
@@ -111,8 +113,9 @@ async getByStudentId(studentId) {
           {"field": {"Name": "score_c"}},
           {"field": {"Name": "max_score_c"}},
           {"field": {"Name": "percentage_c"}},
-          {"field": {"Name": "letter_grade_c"}},
+{"field": {"Name": "letter_grade_c"}},
           {"field": {"Name": "notes_c"}},
+          {"field": {"Name": "description_c"}},
           {"field": {"Name": "student_id_c"}}
         ],
         where: [

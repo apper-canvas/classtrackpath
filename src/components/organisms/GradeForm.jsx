@@ -82,6 +82,7 @@ student_id_c: studentId,
 max_score_c: parseFloat(formData.maxScore),
         notes_c: formData.notes.trim(),
         description_c: formData.description.trim(),
+        description_c: formData.description.trim(),
         date_c: new Date().toISOString().split('T')[0]
       };
 
