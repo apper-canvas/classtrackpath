@@ -15,7 +15,6 @@ const [formData, setFormData] = useState({
     score: "",
     maxScore: "100",
     notes: "",
-    description: ""
   });
   const [loading, setLoading] = useState(false);
 
@@ -39,7 +38,6 @@ if (editGrade) {
         score: editGrade.score_c?.toString() || "",
         maxScore: editGrade.max_score_c?.toString() || "100",
         notes: editGrade.notes_c || "",
-        description: editGrade.description_c || ""
       });
     }
   }, [editGrade]);
@@ -87,7 +85,6 @@ const gradeData = {
         score_c: parseFloat(formData.score),
         max_score_c: parseFloat(formData.maxScore),
         notes_c: formData.notes.trim(),
-        description_c: formData.description.trim(),
         date_c: new Date().toISOString().split('T')[0]
       };
 
@@ -247,14 +244,6 @@ const gradeData = {
           placeholder="Add any notes or comments..."
         />
 
-        <FormField
-          label="Description"
-          name="description"
-          type="textarea"
-          value={formData.description}
-          onChange={handleInputChange}
-          placeholder="Add a detailed description..."
-        />
         <div className="flex justify-end gap-3">
           <Button
             type="button"
