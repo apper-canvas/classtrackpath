@@ -7,12 +7,13 @@ import FormField from "@/components/molecules/FormField";
 import gradeService from "@/services/api/gradeService";
 
 const GradeForm = ({ studentId, onSubmit, onCancel, editGrade = null }) => {
-  const [formData, setFormData] = useState({
+const [formData, setFormData] = useState({
     assignmentName: "",
     category: "",
     score: "",
     maxScore: "100",
-    notes: ""
+    notes: "",
+    description: ""
   });
   const [loading, setLoading] = useState(false);
 
@@ -30,10 +31,11 @@ const GradeForm = ({ studentId, onSubmit, onCancel, editGrade = null }) => {
 if (editGrade) {
       setFormData({
         assignmentName: editGrade.assignment_name_c || "",
-        category: editGrade.category_c || "",
+category: editGrade.category_c || "",
         score: editGrade.score_c?.toString() || "",
         maxScore: editGrade.max_score_c?.toString() || "100",
-        notes: editGrade.notes_c || ""
+        notes: editGrade.notes_c || "",
+        description: editGrade.description_c || ""
       });
     }
   }, [editGrade]);
@@ -77,8 +79,9 @@ student_id_c: studentId,
         assignment_name_c: formData.assignmentName.trim(),
         category_c: formData.category,
         score_c: parseFloat(formData.score),
-        max_score_c: parseFloat(formData.maxScore),
+max_score_c: parseFloat(formData.maxScore),
         notes_c: formData.notes.trim(),
+        description_c: formData.description.trim(),
         date_c: new Date().toISOString().split('T')[0]
       };
 
@@ -174,7 +177,7 @@ student_id_c: studentId,
           </div>
         )}
 
-        <FormField
+<FormField
           label="Notes"
           name="notes"
           value={formData.notes}
@@ -182,6 +185,14 @@ student_id_c: studentId,
           placeholder="Add any notes or comments..."
         />
 
+        <FormField
+          label="Description"
+          name="description"
+          type="textarea"
+          value={formData.description}
+          onChange={handleInputChange}
+          placeholder="Add a detailed description..."
+        />
         <div className="flex justify-end gap-3">
           <Button
             type="button"
