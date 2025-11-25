@@ -61,34 +61,33 @@ const [formData, setFormData] = useState({
   const applyFilters = () => {
     let filtered = [...students];
 
-    // Apply status filter
+// Apply status filter
     if (filterStatus !== "all") {
-filtered = filtered.filter(student => 
-        student.status_c.toLowerCase() === filterStatus.toLowerCase()
+      filtered = filtered.filter(student => 
+        student.status_c?.toLowerCase() === filterStatus.toLowerCase()
       );
     }
 
     // Apply search filter
     if (globalSearch) {
       filtered = filtered.filter(student =>
-student.first_name_c.toLowerCase().includes(globalSearch.toLowerCase()) ||
-        student.last_name_c.toLowerCase().includes(globalSearch.toLowerCase()) ||
-        student.student_id_c.toLowerCase().includes(globalSearch.toLowerCase()) ||
-        student.email_c.toLowerCase().includes(globalSearch.toLowerCase())
+        student.first_name_c?.toLowerCase().includes(globalSearch.toLowerCase()) ||
+        student.last_name_c?.toLowerCase().includes(globalSearch.toLowerCase()) ||
+        student.student_id_c?.toLowerCase().includes(globalSearch.toLowerCase()) ||
+        student.email_c?.toLowerCase().includes(globalSearch.toLowerCase())
       );
     }
 
     setFilteredStudents(filtered);
   };
 
-  const handleFormSubmit = async (e) => {
+const handleFormSubmit = async (e) => {
     e.preventDefault();
     
-    if (!formData.firstName.trim() || !formData.lastName.trim()) {
+    if (!formData.first_name_c?.trim() || !formData.last_name_c?.trim()) {
       toast.error("First name and last name are required");
       return;
     }
-
     try {
 const studentData = {
         ...formData,
@@ -401,10 +400,10 @@ Name: "",
                   </Button>
                 </div>
 
-                <div className="flex items-center gap-6">
+<div className="flex items-center gap-6">
                   <img
-src={selectedStudent.photo_url_c}
-                    alt={`${selectedStudent.first_name_c} ${selectedStudent.last_name_c}`}
+                    src={selectedStudent.photo_url_c || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"}
+                    alt={`${selectedStudent.first_name_c || ''} ${selectedStudent.last_name_c || ''}`}
                     className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg"
                   />
                   <div>
@@ -481,12 +480,13 @@ src={selectedStudent.photo_url_c}
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Modified By
                     </label>
-                    <p className="text-gray-900">{selectedStudent.ModifiedBy?.Name || "System"}</p>
 <p className="text-gray-900">{selectedStudent.ModifiedBy?.Name || "System"}</p>
                   </div>
                 </div>
+</div>
 
                 <div className="flex justify-end gap-3">
+                  <Button
                     variant="outline"
                     onClick={() => {
                       setSelectedStudent(null);
@@ -495,7 +495,6 @@ src={selectedStudent.photo_url_c}
                   >
                     Edit Student
                   </Button>
-                  <Button
                     onClick={() => setSelectedStudent(null)}
                   >
                     Close
