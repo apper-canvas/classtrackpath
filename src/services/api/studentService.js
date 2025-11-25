@@ -6,9 +6,9 @@ class StudentService {
     this.tableName = 'students_c';
   }
 
-  async getAll() {
+async getAll() {
     try {
-      const apperClient = getApperClient();
+      const apperClient = await getApperClient();
       if (!apperClient) {
         throw new Error('ApperClient not initialized');
       }
@@ -51,9 +51,9 @@ class StudentService {
     }
   }
 
-  async getById(id) {
+async getById(id) {
     try {
-      const apperClient = getApperClient();
+      const apperClient = await getApperClient();
       if (!apperClient) {
         throw new Error('ApperClient not initialized');
       }
@@ -93,9 +93,9 @@ fields: [
     }
   }
 
-  async create(studentData) {
+async create(studentData) {
     try {
-      const apperClient = getApperClient();
+      const apperClient = await getApperClient();
       if (!apperClient) {
         throw new Error('ApperClient not initialized');
       }
@@ -151,9 +151,9 @@ Name: studentData.Name || `${studentData.first_name_c} ${studentData.last_name_c
     }
   }
 
-  async update(id, updateData) {
+async update(id, updateData) {
     try {
-      const apperClient = getApperClient();
+      const apperClient = await getApperClient();
       if (!apperClient) {
         throw new Error('ApperClient not initialized');
       }
@@ -200,9 +200,9 @@ Name: studentData.Name || `${studentData.first_name_c} ${studentData.last_name_c
     }
   }
 
-  async delete(id) {
+async delete(id) {
     try {
-      const apperClient = getApperClient();
+      const apperClient = await getApperClient();
       if (!apperClient) {
         throw new Error('ApperClient not initialized');
       }
@@ -244,9 +244,9 @@ Name: studentData.Name || `${studentData.first_name_c} ${studentData.last_name_c
     }
   }
 
-  async search(query) {
+async search(query) {
     try {
-      const apperClient = getApperClient();
+      const apperClient = await getApperClient();
       if (!apperClient) {
         throw new Error('ApperClient not initialized');
       }
@@ -333,9 +333,9 @@ Name: studentData.Name || `${studentData.first_name_c} ${studentData.last_name_c
     }
   }
 
-  async getByStatus(status) {
+async getByStatus(status) {
     try {
-      const apperClient = getApperClient();
+      const apperClient = await getApperClient();
       if (!apperClient) {
         throw new Error('ApperClient not initialized');
       }
