@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import { toast } from 'react-toastify';
 import * as activityService from '@/services/api/activityService';
-import * as studentService from '@/services/api/studentService';
+import studentService from '@/services/api/studentService';
 import Button from '@/components/atoms/Button';
 import Card from '@/components/atoms/Card';
 import Select from '@/components/atoms/Select';
