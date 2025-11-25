@@ -15,7 +15,13 @@ class StudentService {
 
       const params = {
         fields: [
-          {"field": {"Name": "Name"}},
+{"field": {"Name": "Name"}},
+          {"field": {"Name": "Tags"}},
+          {"field": {"Name": "Owner"}},
+          {"field": {"Name": "CreatedOn"}},
+          {"field": {"Name": "CreatedBy"}},
+          {"field": {"Name": "ModifiedOn"}},
+          {"field": {"Name": "ModifiedBy"}},
           {"field": {"Name": "first_name_c"}},
           {"field": {"Name": "last_name_c"}},
           {"field": {"Name": "student_id_c"}},
@@ -52,8 +58,14 @@ class StudentService {
       }
 
       const params = {
-        fields: [
+fields: [
           {"field": {"Name": "Name"}},
+          {"field": {"Name": "Tags"}},
+          {"field": {"Name": "Owner"}},
+          {"field": {"Name": "CreatedOn"}},
+          {"field": {"Name": "CreatedBy"}},
+          {"field": {"Name": "ModifiedOn"}},
+          {"field": {"Name": "ModifiedBy"}},
           {"field": {"Name": "first_name_c"}},
           {"field": {"Name": "last_name_c"}},
           {"field": {"Name": "student_id_c"}},
@@ -88,6 +100,8 @@ class StudentService {
       }
 
       const preparedData = {
+Name: studentData.Name || `${studentData.first_name_c} ${studentData.last_name_c}`,
+        Tags: studentData.Tags || "",
         first_name_c: studentData.first_name_c,
         last_name_c: studentData.last_name_c,
         student_id_c: studentData.student_id_c,
@@ -239,7 +253,13 @@ class StudentService {
       const searchTerm = query.toLowerCase();
       const params = {
         fields: [
-          {"field": {"Name": "Name"}},
+{"field": {"Name": "Name"}},
+          {"field": {"Name": "Tags"}},
+          {"field": {"Name": "Owner"}},
+          {"field": {"Name": "CreatedOn"}},
+          {"field": {"Name": "CreatedBy"}},
+          {"field": {"Name": "ModifiedOn"}},
+          {"field": {"Name": "ModifiedBy"}},
           {"field": {"Name": "first_name_c"}},
           {"field": {"Name": "last_name_c"}},
           {"field": {"Name": "student_id_c"}},
@@ -320,7 +340,13 @@ class StudentService {
 
       const params = {
         fields: [
-          {"field": {"Name": "Name"}},
+{"field": {"Name": "Name"}},
+          {"field": {"Name": "Tags"}},
+          {"field": {"Name": "Owner"}},
+          {"field": {"Name": "CreatedOn"}},
+          {"field": {"Name": "CreatedBy"}},
+          {"field": {"Name": "ModifiedOn"}},
+          {"field": {"Name": "ModifiedBy"}},
           {"field": {"Name": "first_name_c"}},
           {"field": {"Name": "last_name_c"}},
           {"field": {"Name": "student_id_c"}},

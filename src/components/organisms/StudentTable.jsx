@@ -25,7 +25,7 @@ const StudentTable = ({
   };
 
 const sortedStudents = [...students].sort((a, b) => {
-    let aValue = a[sortField];
+let aValue = a[sortField] || a.Name || `${a.first_name_c} ${a.last_name_c}`;
     let bValue = b[sortField];
     
     if (typeof aValue === "string") {
@@ -78,12 +78,12 @@ const sortedStudents = [...students].sort((a, b) => {
           <thead className="bg-gradient-to-r from-gray-50 to-gray-100">
             <tr>
               <th className="px-6 py-4 text-left">
-                <button
-                  onClick={() => handleSort("lastName")}
+<button
+                  onClick={() => handleSort("Name")}
                   className="flex items-center gap-2 font-medium text-gray-700 hover:text-primary transition-colors duration-200"
                 >
                   Student
-                  <SortIcon field="lastName" />
+                  <SortIcon field="Name" />
                 </button>
               </th>
               <th className="px-6 py-4 text-left">
@@ -121,12 +121,12 @@ onClick={() => handleSort("student_id_c")}
                   <div className="flex items-center gap-3">
                     <img
 src={student.photo_url_c}
-                      alt={`${student.first_name_c} ${student.last_name_c}`}
+                      alt={student.Name || `${student.first_name_c} ${student.last_name_c}`}
                       className="w-10 h-10 rounded-full object-cover border-2 border-white shadow-md"
                     />
                     <div>
                       <p className="font-medium text-gray-900">
-                        {student.first_name_c} {student.last_name_c}
+                        {student.Name || `${student.first_name_c} ${student.last_name_c}`}
                       </p>
                       <p className="text-sm text-gray-600">{student.email_c}</p>
                     </div>

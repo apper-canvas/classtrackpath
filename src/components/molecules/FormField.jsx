@@ -5,6 +5,7 @@ import Select from "@/components/atoms/Select";
 const FormField = ({ 
   type = "input", 
   options = [], 
+  readOnly = false,
   ...props 
 }) => {
   if (type === "select") {
@@ -20,7 +21,7 @@ const FormField = ({
     );
   }
 
-  return <Input type={type} {...props} />;
+return <Input type={type} readOnly={readOnly} {...props} />;
 };
 
 export default FormField;

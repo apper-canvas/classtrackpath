@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { useOutletContext } from "react-router-dom";
 import { toast } from "react-toastify";
+import studentService from "@/services/api/studentService";
 import ApperIcon from "@/components/ApperIcon";
-import Button from "@/components/atoms/Button";
-import Card from "@/components/atoms/Card";
-import FormField from "@/components/molecules/FormField";
-import StudentTable from "@/components/organisms/StudentTable";
 import Loading from "@/components/ui/Loading";
 import ErrorView from "@/components/ui/ErrorView";
 import Empty from "@/components/ui/Empty";
-import studentService from "@/services/api/studentService";
+import Button from "@/components/atoms/Button";
+import Card from "@/components/atoms/Card";
+import StudentTable from "@/components/organisms/StudentTable";
+import FormField from "@/components/molecules/FormField";
 
 const Students = () => {
   const { globalSearch } = useOutletContext() || {};
@@ -23,8 +23,10 @@ const Students = () => {
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [filterStatus, setFilterStatus] = useState("all");
   
-  const [formData, setFormData] = useState({
-first_name_c: "",
+const [formData, setFormData] = useState({
+    Name: "",
+    Tags: "",
+    first_name_c: "",
     last_name_c: "",
     student_id_c: "",
     email_c: "",
@@ -88,8 +90,9 @@ student.first_name_c.toLowerCase().includes(globalSearch.toLowerCase()) ||
     }
 
     try {
-      const studentData = {
+const studentData = {
         ...formData,
+        Name: formData.Name || `${formData.first_name_c} ${formData.last_name_c}`,
         photoUrl: formData.photoUrl || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
       };
 
@@ -112,15 +115,17 @@ student.first_name_c.toLowerCase().includes(globalSearch.toLowerCase()) ||
 
   const handleEdit = (student) => {
     setEditStudent(student);
-    setFormData({
-first_name_c: student.first_name_c,
-      last_name_c: student.last_name_c,
-      student_id_c: student.student_id_c,
-      email_c: student.email_c,
-      phone_c: student.phone_c,
-      grade_level_c: student.grade_level_c,
-      photo_url_c: student.photo_url_c,
-      enrollment_date_c: student.enrollment_date_c
+setFormData({
+      Name: student.Name || "",
+      Tags: student.Tags || "",
+      first_name_c: student.first_name_c || "",
+      last_name_c: student.last_name_c || "",
+      student_id_c: student.student_id_c || "",
+      email_c: student.email_c || "",
+      phone_c: student.phone_c || "",
+      grade_level_c: student.grade_level_c || "",
+      photo_url_c: student.photo_url_c || "",
+      enrollment_date_c: student.enrollment_date_c || ""
     });
     setShowForm(true);
   };
@@ -143,13 +148,16 @@ first_name_c: student.first_name_c,
 
   const resetForm = () => {
     setFormData({
-      firstName: "",
-      lastName: "",
-      studentId: "",
-      email: "",
-      phone: "",
-      gradeLevel: "",
-      photoUrl: ""
+Name: "",
+      Tags: "",
+      first_name_c: "",
+      last_name_c: "",
+      student_id_c: "",
+      email_c: "",
+      phone_c: "",
+      grade_level_c: "",
+      photo_url_c: "",
+      enrollment_date_c: ""
     });
     setEditStudent(null);
     setShowForm(false);
@@ -257,6 +265,24 @@ first_name_c: student.first_name_c,
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 <FormField
+                    label="Name"
+                    name="Name"
+                    value={formData.Name}
+                    onChange={handleInputChange}
+                    className="md:col-span-2"
+                    required
+                  />
+
+                  <FormField
+                    label="Tags"
+                    name="Tags"
+                    value={formData.Tags}
+                    onChange={handleInputChange}
+                    placeholder="Enter comma-separated tags"
+                    className="md:col-span-2"
+                  />
+
+                  <FormField
                     label="First Name"
                     name="first_name_c"
                     value={formData.first_name_c}
@@ -383,15 +409,26 @@ src={selectedStudent.photo_url_c}
                   />
                   <div>
                     <h3 className="text-2xl font-bold text-gray-900">
-                      {selectedStudent.first_name_c} {selectedStudent.last_name_c}
+                      {selectedStudent.Name || `${selectedStudent.first_name_c} ${selectedStudent.last_name_c}`}
                     </h3>
                     <p className="text-gray-600">{selectedStudent.student_id_c}</p>
                     <p className="text-gray-600">{selectedStudent.grade_level_c}</p>
                   </div>
                 </div>
 
-                {/* Student Details */}
                 <div className="grid grid-cols-2 gap-6 mt-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Name
+                    </label>
+                    <p className="text-gray-900">{selectedStudent.Name || "Not provided"}</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Tags
+                    </label>
+                    <p className="text-gray-900">{selectedStudent.Tags || "No tags"}</p>
+                  </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Email
@@ -416,10 +453,40 @@ src={selectedStudent.photo_url_c}
                     </label>
                     <p className="text-gray-900">{selectedStudent.status_c}</p>
                   </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Owner
+                    </label>
+                    <p className="text-gray-900">{selectedStudent.Owner?.Name || "System"}</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Created On
+                    </label>
+                    <p className="text-gray-900">{selectedStudent.CreatedOn ? new Date(selectedStudent.CreatedOn).toLocaleDateString() : "N/A"}</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Created By
+                    </label>
+                    <p className="text-gray-900">{selectedStudent.CreatedBy?.Name || "System"}</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Modified On
+                    </label>
+                    <p className="text-gray-900">{selectedStudent.ModifiedOn ? new Date(selectedStudent.ModifiedOn).toLocaleDateString() : "N/A"}</p>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Modified By
+                    </label>
+                    <p className="text-gray-900">{selectedStudent.ModifiedBy?.Name || "System"}</p>
+<p className="text-gray-900">{selectedStudent.ModifiedBy?.Name || "System"}</p>
+                  </div>
                 </div>
 
                 <div className="flex justify-end gap-3">
-                  <Button
                     variant="outline"
                     onClick={() => {
                       setSelectedStudent(null);
